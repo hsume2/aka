@@ -20,10 +20,6 @@ You can replace commonly used commands with shorter, sexier keyboard shortcuts a
 
 With **aka**, you can add, show, edit, remove, list keyboard shortcuts. On top of that you can tag shortcuts based on environment, tool, context, etc. Then, you can generate an appropriate output file for your environment.
 
-## INSTALLATION
-
-    $ gem install hsume2-aka
-
 ## OPTIONS
 
   * `--help`:<br>
@@ -34,6 +30,10 @@ With **aka**, you can add, show, edit, remove, list keyboard shortcuts. On top o
 
   * `--log-level=<debug|info|warn|error|fatal>`:<br>
     Set the logging level (Default: info)
+
+## INSTALLATION
+
+    $ gem install hsume2-aka
 
 ## EXAMPLES
 
