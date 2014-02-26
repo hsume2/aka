@@ -1,0 +1,27 @@
+aka-show(1) -- Show keyboard shortcuts
+=====================================
+
+## SYNOPSIS
+
+`aka show` <shortcut>
+
+## DESCRIPTION
+
+This command show a keyboard shortcut in `aka(7)`.
+
+## EXAMPLES
+
+    $ aka add psf "ps aux | grep $@" --function
+    Created shortcut.
+    $ aka show psf
+    Keyword: psf
+    Description:
+
+    Function: y
+    Tags:
+    Script:
+    ps aux | grep $@
+
+## SEE ALSO
+
+`aka(7)`, `aka-add(1)`

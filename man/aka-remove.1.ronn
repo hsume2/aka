@@ -1,0 +1,21 @@
+aka-remove(1) -- Remove keyboard shortcuts
+==========================================
+
+## SYNOPSIS
+
+`aka remove` <shortcut>
+
+## DESCRIPTION
+
+This command removes a keyboard shortcut from `aka(7)`.
+
+## EXAMPLES
+
+Remove a shortcut:
+
+    $ aka remove ls
+    Removed shortcut.
+
+## SEE ALSO
+
+`aka(7)`, `aka-show(1)`

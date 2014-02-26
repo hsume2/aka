@@ -1,0 +1,10 @@
+.DS_Store
+results.html
+pkg
+html
+tmp
+Gemfile.lock
+.bundle
+
+# output from ronn
+lib/aka/man/

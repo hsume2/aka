@@ -1,0 +1,67 @@
+aka-edit(1) -- Edit keyboard shortcuts
+======================================
+
+## SYNOPSIS
+
+`aka edit` <shortcut>
+          [`-i` input]
+
+## DESCRIPTION
+
+This command edits a keyboard shortcut in `aka(7)`.
+
+The command can be performed interactively or via an input file.
+
+## OPTIONS
+
+* `-i <input>`:
+  Update the shortcut with an input file. See the "FORMAT" section for more details.
+
+## FORMAT
+
+The format should include the following sections (in order):
+
+  * `Shortcut: <shortcut>`<br>
+    Where <shortcut> is the string to change the <shortcut> cut.
+
+  * `Description: <description>`<br>
+    Where <description> is one or more lines of text.
+
+  * `Function (y/n): <y|n>`<br>
+    Where <y|n> is either `y` or `n`.
+
+  * `Tags: <tags>`<br>
+    Where <tags> is a comma-separated list of tags for the shortcut.
+
+  * `Command: <command>`<br>
+    Where <command> is one or more lines of text.
+
+## INTERACTIVE MODE
+
+When the command enters the interactive mode, it shows the <shortcut> in the expected `FORMAT` in an interactive editor.
+
+## EXAMPLES
+
+Edit a shortcut where `input.txt` is:
+
+    Shortcut: lsf
+    Description:
+    1
+    2
+    3
+    Function (y/n): y
+    Tags: zsh, bash
+    Command:
+    ls -F
+
+    $ aka edit lsf -i input.txt
+    Saved shortcut.
+
+## ENVIRONMENT
+
+  * `EDITOR`:<br>
+    The editor **aka** will use in interactive mode. Default: vim
+
+## SEE ALSO
+
+`aka(7)`, `aka-show(1)`

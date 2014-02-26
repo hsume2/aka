@@ -1,0 +1,51 @@
+aka-list(1) -- List keyboard shortcuts
+======================================
+
+## SYNOPSIS
+
+`aka list` [`-t` <tag1>[,<tag2>...]]
+
+## DESCRIPTION
+
+This command lists keyboard shortcuts in `aka(7)`.
+
+This command can be performed with or without tag filtering.
+
+## OPTIONS
+
+* `-t` <tag1>[,<tag2>...]:
+  A comma-separated list of tags to filter with. Shortcuts tagged with <tag1>[,<tag2>...] will be included. Shortcuts tagged with other tags are excluded. Shortcuts with no tags are always included.
+
+## EXAMPLES
+
+List all shortcuts:
+
+    $ aka list
+    #default
+    ========
+    ..                            cd ..
+
+    #os:linux
+    =========
+    ls                            ls; ls; ls
+
+    #os:darwin
+    ==========
+    ls                            ls -FG
+
+List shortcuts matching `--tag os:darwin`:
+
+    $ aka list -t os:darwin
+    #default
+    ========
+    ..                            cd ..
+
+    #os:darwin
+    ==========
+    ls                            ls -FG
+
+    2 shortcut(s) excluded (#os:linux, #os:windows).
+
+## SEE ALSO
+
+`aka(7)`, `aka-show(1)`

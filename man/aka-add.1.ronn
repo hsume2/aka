@@ -1,0 +1,32 @@
+aka-add(1) -- Add keyboard shortcuts
+====================================
+
+## SYNOPSIS
+
+`aka add` <shortcut> <command>
+          [`-d` <description>]
+          [`-t` <tag1>[,<tag2>...]]
+          [`-F`]
+          [`-f`]
+
+## DESCRIPTION
+
+This command adds a keyboard shortcut to `aka(7)`.
+
+## OPTIONS
+
+* `-d <description>`:
+  Provide a description for the shortcut.
+
+* `-t` <tag1>[,<tag2>...]:
+  A comma-separated list of tags for the shortcut.
+
+* `-F`:
+  Create the shortcut as a shell function.
+
+* `-f`:
+  Ovewrite an existing shortcut if a shortcut exists with the same <shortcut>.
+
+## SEE ALSO
+
+`aka(7)`, `aka-show(1)`

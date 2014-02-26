@@ -1,0 +1,51 @@
+aka-generate(1) -- Generate commands for loading keyboard shortcuts into your shell
+===================================================================================
+
+## SYNOPSIS
+
+`aka generate` [`-t` <tag1>[,<tag2>...]]
+               [`-o` <output>]
+
+## DESCRIPTION
+
+This command generates commands for loading keyboard shortcuts in `aka(7)` into your shell.
+
+This command can be performed with or without tag filtering.
+
+By default, the commands are generated to `STDOUT`.
+
+## OPTIONS
+
+* `-t` <tag1>[,<tag2>...]:
+  A comma-separated list of tags to filter with. Shortcuts tagged with <tag1>[,<tag2>...] will be included. Shortcuts tagged with other tags are excluded. Shortcuts with no tags are always included.
+
+* `-o <output>`:
+  The location to generate the commands to.
+
+## EXAMPLES
+
+Generate for all shortcuts:
+
+    $ aka generate
+    alias ..="cd .."
+    alias ls="ls -FG"
+    function ls {
+      ls -F --color=auto
+    }
+
+Generate for shortcuts matching `--tag os:darwin`:
+
+    $ aka generate -t os:darwin
+    alias ..="cd .."
+    alias ls="ls -FG"
+
+    2 shortcut(s) excluded (#os:linux, #os:windows).
+
+Generate to file:
+
+    $ aka generate -o ~/.aka.zsh
+    Generated ~/.aka.zsh.
+
+## SEE ALSO
+
+`aka(7)`, `aka-show(1)`
