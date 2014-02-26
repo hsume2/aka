@@ -1,6 +1,8 @@
 aka(7) -- Manage Shell Keyboard Shortcuts
 =========================================
 
+[![Build Status](https://travis-ci.org/hsume2/aka.png?branch=master)](https://travis-ci.org/hsume2/aka)
+
 ## SYNOPSIS
 
 `aka` add <shortcut> <command> \[options\]<br>
@@ -17,6 +19,10 @@ aka(7) -- Manage Shell Keyboard Shortcuts
 You can replace commonly used commands with shorter, sexier keyboard shortcuts and, ultimately, improve your productivity!
 
 With **aka**, you can add, show, edit, remove, list keyboard shortcuts. On top of that you can tag shortcuts based on environment, tool, context, etc. Then, you can generate an appropriate output file for your environment.
+
+## INSTALLATION
+
+    $ gem install aka
 
 ## OPTIONS
 
