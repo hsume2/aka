@@ -94,5 +94,5 @@ rescue LoadError
   end
 end
 
-task :default => [:test,:features]
+task :default => ["man:build", :test, :features]
 

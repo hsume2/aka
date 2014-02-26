@@ -18,6 +18,10 @@ You can replace commonly used commands with shorter, sexier keyboard shortcuts a
 
 With **aka**, you can add, show, edit, remove, list keyboard shortcuts. On top of that you can tag shortcuts based on environment, tool, context, etc. Then, you can generate an appropriate output file for your environment.
 
+## INSTALLATION
+
+    $ gem install aka
+
 ## OPTIONS
 
   * `--help`:<br>

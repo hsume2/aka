@@ -1,4 +1,8 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in aka.gemspec
 gemspec
+
+group :guard do
+  gem 'guard'
+  gem 'guard-cucumber'
+end
