@@ -22,7 +22,7 @@ With **aka**, you can add, show, edit, remove, list keyboard shortcuts. On top o
 
 ## INSTALLATION
 
-    $ gem install aka
+    $ gem install hsume2-aka
 
 ## OPTIONS
 
