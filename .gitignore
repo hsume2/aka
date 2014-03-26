@@ -5,6 +5,7 @@ html
 tmp
 Gemfile.lock
 .bundle
+.ruby-version
 
 # output from ronn
 lib/aka/man/
