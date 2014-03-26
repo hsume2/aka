@@ -182,8 +182,6 @@ module Aka
 
     def upgrade(options)
       configuration.upgrade
-
-      puts "Upgraded #{configuration.aka_yml}."
     end
 
     private

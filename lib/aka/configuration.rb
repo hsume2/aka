@@ -79,6 +79,8 @@ module Aka
     def upgrade
       if !version
         Upgrader::FromV0.run(aka_yml)
+
+        puts "Upgraded #{aka_yml}."
       end
     end
 
