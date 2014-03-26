@@ -43,6 +43,12 @@ module Aka
         store.edit(options)
       when 'show'
         store.show(options)
+      when 'config'
+        store.config(options)
+      when 'upgrade'
+        store.upgrade(options)
+      when 'sync'
+        store.sync
       else
         store.help(command, options)
       end

@@ -22,7 +22,9 @@ Feature: Remove keyboard shortcuts
     """
     And the file ".aka.yml" should contain exactly:
     """
-    --- {}
+    ---
+    :version: '1'
+    :shortcuts: {}
 
     """
 
@@ -39,10 +41,12 @@ Feature: Remove keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    1: !ruby/object:OpenStruct
-      table:
-        :shortcut: ls
-        :command: ls -F --color=auto
-      modifiable: true
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+        modifiable: true
 
     """

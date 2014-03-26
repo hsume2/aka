@@ -42,14 +42,14 @@ module Aka
           abort %{Shortcut "#{options[:shortcut]}" exists. Pass --force to overwrite. Or provide a new --tag.}
         else
           found.each do |n, row|
-            replace(n, options)
+            configuration.replace_shortcut(n, Configuration::Shortcut.parse(options))
           end
-          save
+          configuration.save
           puts "Overwrote shortcut."
         end
       else
-        append(options)
-        save
+        configuration.append_shortcut(Configuration::Shortcut.parse(options))
+        configuration.save
         puts "Created shortcut."
       end
     end
@@ -72,10 +72,10 @@ module Aka
 
       if found.length > 0
         found.each do |n, row|
-          delete(n)
+          configuration.delete_shortcut(n)
         end
 
-        save
+        configuration.save
 
         puts "Removed shortcut."
       else
@@ -132,6 +132,17 @@ module Aka
       excluded_output(excluded)
     end
 
+    def config(options)
+      configuration.add_configuration(Configuration::Config.parse(options))
+      configuration.save
+
+      puts "Saved configuration."
+    end
+
+    def sync
+      # configuration.sync
+    end
+
     def edit(options)
       result = nil
 
@@ -180,8 +191,8 @@ module Aka
 
       if result
         parse_row_txt(row, result)
-        shortcuts[index] = row
-        save
+        configuration.replace_shortcut(index, row)
+        configuration.save
         puts "Saved shortcut."
       else
       end
@@ -199,16 +210,20 @@ module Aka
       end
     end
 
+    def upgrade(options)
+      configuration.upgrade
+
+      puts "Upgraded #{configuration.aka_yml}."
+    end
+
     private
 
+    def configuration
+      @configuration ||= Configuration.new
+    end
+
     def shortcuts
-      @shortcuts ||= begin
-        if File.exist?(aka_yml)
-          YAML::load_file(aka_yml)
-        else
-          {}
-        end
-      end
+      configuration.shortcuts
     end
 
     def find(options)
@@ -225,43 +240,6 @@ module Aka
           row.shortcut == options[:shortcut]
         end
       end
-    end
-
-    def append(options)
-      shortcuts[count + 1] = row(options)
-    end
-
-    def replace(index, options)
-      shortcuts[index] = row(options)
-    end
-
-    def delete(index)
-      shortcuts.delete(index)
-    end
-
-    def count
-      result, _ = shortcuts.max { |(n, _)| n }
-      result || 0
-    end
-
-    def row(options)
-      OpenStruct.new.tap do |row|
-        row.shortcut = options['shortcut']
-        row.command = options['command']
-        row.tag = options['tag'] if options['tag']
-        row.description = options['description'] if options['description']
-        row.function = options['function'] if options['function']
-      end
-    end
-
-    def save
-      File.open(aka_yml, 'w+') do |f|
-        f.write shortcuts.to_yaml
-      end
-    end
-
-    def aka_yml
-      ENV['AKA'] || File.expand_path('~/.aka.yml')
     end
 
     def shortcuts_by_tag
