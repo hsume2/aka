@@ -1,3 +1,4 @@
+require "aka/shortcuts"
 require "aka/configuration"
 require "aka/upgrader"
 require "aka/store"

@@ -78,14 +78,12 @@ Feature: Configure keyboard shortcuts
     Created shortcut.
     Created shortcut.
     Saved configuration.
+    Generated .aka.zsh.
 
     """
     And the file ".aka.zsh" should contain exactly:
     """
     alias ..="cd .."
     alias ls="ls -FG"
-    function ls {
-      ls -F --color=auto
-    }
 
     """

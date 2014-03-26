@@ -14,6 +14,20 @@ module Aka
           row.function = options['function'] if options['function']
         end
       end
+
+      def self.generate_output(row)
+        string = if row.function
+          <<-EOS.gsub(/^          /, '')
+          function #{row.shortcut} {
+            #{row.command}
+          }
+          EOS
+        else
+          %{alias #{row.shortcut}="#{row.command.gsub(%{"}, %{\\"})}"}
+        end
+
+        string
+      end
     end
 
     module Config
@@ -36,18 +50,8 @@ module Aka
       @configuration[:shortcuts] ||= {}
     end
 
-    class Shortcuts
-      def initialize(configuration, shortcuts)
-
-      end
-    end
-
-    def _shortcuts
-      @_shortcuts ||= Shortcuts.new(self, @configuration[:shortcuts])
-    end
-
     def shortcuts
-      @configuration[:shortcuts]
+      @shortcuts ||= Shortcuts.new(self, @configuration[:shortcuts])
     end
 
     def version
@@ -57,7 +61,7 @@ module Aka
     def save
       current = {
         :version => version || FORMAT,
-        :shortcuts => shortcuts
+        :shortcuts => shortcuts.all
       }
 
       current[:configs] = @configuration[:configs] if @configuration[:configs]
@@ -65,18 +69,6 @@ module Aka
       File.open(aka_yml, 'w+') do |f|
         f.write current.to_yaml
       end
-    end
-
-    def append_shortcut(shortcut)
-      shortcuts[count + 1] = shortcut
-    end
-
-    def replace_shortcut(index, shortcut)
-      shortcuts[index] = shortcut
-    end
-
-    def delete_shortcut(index)
-      shortcuts.delete(index)
     end
 
     def add_configuration(config)
