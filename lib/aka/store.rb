@@ -64,6 +64,17 @@ module Aka
         puts
       end
 
+      if configuration.links.any?
+        puts "====="
+        puts "Links"
+        puts "====="
+        puts
+
+        configuration.links.each do |link|
+          puts "#{link.output}: #{link.tag.map { |tag| "##{tag}" }.join(', ')}"
+        end
+      end
+
       excluded_output(excluded)
     end
 

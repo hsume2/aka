@@ -240,3 +240,36 @@ Feature: Link keyboard shortcuts
     alias ls="ls -FG"
 
     """
+
+  Scenario: List links
+    Given I run `aka add ls "ls -F --color=auto" --description "ls\nls\nls" --function --tag os:linux`
+    And I run `aka add ls "ls -FG" --tag os:darwin`
+    And I run `aka add .. "cd .."`
+    And I run `aka link --tag os:darwin --output .aka.zsh`
+    When I run `aka list`
+    Then the exit status should be 0
+    And the output should contain exactly:
+    """
+    Created shortcut.
+    Created shortcut.
+    Created shortcut.
+    Saved link.
+    #default
+    ========
+    ..                            cd ..
+
+    #os:linux
+    =========
+    ls                            ls; ls; ls
+
+    #os:darwin
+    ==========
+    ls                            ls -FG
+
+    =====
+    Links
+    =====
+
+    .aka.zsh: #os:darwin
+
+    """
