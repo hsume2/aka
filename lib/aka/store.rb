@@ -117,7 +117,7 @@ module Aka
 
     def sync
       configuration.links.each do |config|
-        excluded = configuration.shortcuts.generate(config)
+        excluded = configuration.shortcuts.generate(config.marshal_dump)
         excluded_output(excluded)
       end
     end
