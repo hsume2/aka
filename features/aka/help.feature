@@ -29,7 +29,7 @@ Feature: Help with aka
     Then the exit status should be 0
     And the output should contain exactly:
     """
-    aka version 0.1.0
+    aka version 0.2.0
 
     """
 
@@ -77,4 +77,28 @@ Feature: Help with aka
     And the output should contain:
     """
     aka-edit - Edit keyboard shortcuts
+    """
+
+  Scenario: Help linking shortcuts
+    When I run `aka -h link`
+    Then the exit status should be 0
+    And the output should contain:
+    """
+    aka-link - Link keyboard shortcuts
+    """
+
+  Scenario: Help syncing shortcuts
+    When I run `aka -h sync`
+    Then the exit status should be 0
+    And the output should contain:
+    """
+    aka-sync - Synchronize keyboard shortcuts
+    """
+
+  Scenario: Help upgrading shortcuts
+    When I run `aka -h upgrade`
+    Then the exit status should be 0
+    And the output should contain:
+    """
+    aka-upgrade - Upgrade keyboard shortcuts
     """

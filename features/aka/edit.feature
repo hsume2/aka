@@ -35,19 +35,21 @@ Feature: Edit keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    1: !ruby/object:OpenStruct
-      table:
-        :shortcut: lsf
-        :command: ls -F
-        :description: |-
-          1
-          2
-          3
-        :function: true
-        :tag:
-        - zsh
-        - bash
-      modifiable: true
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: lsf
+          :command: ls -F
+          :description: |-
+            1
+            2
+            3
+          :function: true
+          :tag:
+          - zsh
+          - bash
+        modifiable: true
 
     """
 
@@ -65,19 +67,21 @@ Feature: Edit keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    1: !ruby/object:OpenStruct
-      table:
-        :shortcut: lsf
-        :command: ls -F
-        :description: |-
-          1
-          2
-          3
-        :function: true
-        :tag:
-        - zsh
-        - bash
-      modifiable: true
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: lsf
+          :command: ls -F
+          :description: |-
+            1
+            2
+            3
+          :function: true
+          :tag:
+          - zsh
+          - bash
+        modifiable: true
 
     """
 

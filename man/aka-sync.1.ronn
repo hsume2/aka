@@ -1,0 +1,26 @@
+aka-sync(1) -- Synchronize keyboard shortcuts
+=============================================
+
+## SYNOPSIS
+
+`aka sync`
+
+## DESCRIPTION
+
+This command manages synchronizes keyboard shortcuts links in `aka(7)`.
+
+Any links you've created will be generated to the designated `output` with the given `tags`.
+
+## EXAMPLES
+
+Synchronize links:
+
+    $ aka link --tag os:linux --output ~/.aka.zsh
+    Saved link.
+    $ aka sync
+    Generated ~/.aka.zsh.
+    4 shortcut(s) excluded (#linux).
+
+## SEE ALSO
+
+`aka(7)`, `aka-link(1)`

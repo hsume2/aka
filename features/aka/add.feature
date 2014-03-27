@@ -21,11 +21,13 @@ Feature: Add keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    1: !ruby/object:OpenStruct
-      table:
-        :shortcut: ls
-        :command: ls -F --color=auto
-      modifiable: true
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+        modifiable: true
 
     """
 
@@ -39,13 +41,15 @@ Feature: Add keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    1: !ruby/object:OpenStruct
-      table:
-        :shortcut: ls
-        :command: ls -F --color=auto
-        :tag:
-        - os:darwin
-      modifiable: true
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+          :tag:
+          - os:darwin
+        modifiable: true
 
     """
 
@@ -59,14 +63,16 @@ Feature: Add keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    1: !ruby/object:OpenStruct
-      table:
-        :shortcut: ls
-        :command: ls -F --color=auto
-        :tag:
-        - A
-        - B
-      modifiable: true
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+          :tag:
+          - A
+          - B
+        modifiable: true
 
     """
 
@@ -81,21 +87,23 @@ Feature: Add keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    1: !ruby/object:OpenStruct
-      table:
-        :shortcut: ls
-        :command: ls -FG
-        :tag:
-        - A
-        - B
-      modifiable: true
-    2: !ruby/object:OpenStruct
-      table:
-        :shortcut: ls
-        :command: ls -FG
-        :tag:
-        - C
-      modifiable: true
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -FG
+          :tag:
+          - A
+          - B
+        modifiable: true
+      2: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -FG
+          :tag:
+          - C
+        modifiable: true
 
     """
 
@@ -112,11 +120,13 @@ Feature: Add keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    1: !ruby/object:OpenStruct
-      table:
-        :shortcut: ls
-        :command: ls -F --color=auto
-      modifiable: true
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+        modifiable: true
 
     """
 
@@ -133,11 +143,13 @@ Feature: Add keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    1: !ruby/object:OpenStruct
-      table:
-        :shortcut: ls
-        :command: ls -FG
-      modifiable: true
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -FG
+        modifiable: true
 
     """
 
@@ -151,12 +163,14 @@ Feature: Add keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    1: !ruby/object:OpenStruct
-      table:
-        :shortcut: ls
-        :command: ls -F --color=auto
-        :function: true
-      modifiable: true
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+          :function: true
+        modifiable: true
 
     """
 
@@ -170,14 +184,16 @@ Feature: Add keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    1: !ruby/object:OpenStruct
-      table:
-        :shortcut: ls
-        :command: ls -F --color=auto
-        :description: |-
-          ls
-          ls
-          ls
-      modifiable: true
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+          :description: |-
+            ls
+            ls
+            ls
+        modifiable: true
 
     """

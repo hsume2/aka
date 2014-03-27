@@ -43,6 +43,12 @@ module Aka
         store.edit(options)
       when 'show'
         store.show(options)
+      when 'link'
+        store.link(options)
+      when 'upgrade'
+        store.upgrade(options)
+      when 'sync'
+        store.sync
       else
         store.help(command, options)
       end
@@ -60,6 +66,7 @@ module Aka
     on("-i FILE", "--input")
     on("-h", "--help")
     on("-v", "--version")
+    on("--delete")
 
     use_log_level_option
   end

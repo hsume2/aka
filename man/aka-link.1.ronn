@@ -1,0 +1,41 @@
+aka-link(1) -- Link keyboard shortcuts
+======================================
+
+## SYNOPSIS
+
+`aka link` [`-t` <tag1>[,<tag2>...]]
+           [`-o` <output>]
+           [`--delete`]
+
+## DESCRIPTION
+
+This command manages keyboard shortcuts links in `aka(7)`.
+
+After creating a link, you can easily synchronize changes to shortcuts to designated `output` files.
+
+## OPTIONS
+
+* `-t` <tag1>[,<tag2>...]:
+  A comma-separated list of tags to filter with. Shortcuts tagged with <tag1>[,<tag2>...] will be included. Shortcuts tagged with other tags are excluded. Shortcuts with no tags are always included.
+
+* `-o <output>`:
+  The location to link the output to.
+
+* `--delete`:
+  Delete the link with the given options.
+
+## EXAMPLES
+
+Add a link:
+
+    $ aka link --tag os:linux --output ~/.aka.zsh
+    Saved link.
+
+Remove a link:
+
+    $ aka link --delete --tag os:linux --output ~/.aka.zsh
+    Removed link.
+
+## SEE ALSO
+
+`aka(7)`, `aka-sync(1)`

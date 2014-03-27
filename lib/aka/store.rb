@@ -20,6 +20,9 @@ module Aka
         aka-list.1
         aka-remove.1
         aka-show.1
+        aka-link.1
+        aka-sync.1
+        aka-upgrade.1
         aka.7)
 
       exit unless manpages.include?(command)
@@ -35,27 +38,27 @@ module Aka
     end
 
     def add(options)
-      found = find(options)
+      found = configuration.shortcuts.find(options)
 
       if found.length > 0
         unless options[:force]
           abort %{Shortcut "#{options[:shortcut]}" exists. Pass --force to overwrite. Or provide a new --tag.}
         else
           found.each do |n, row|
-            replace(n, options)
+            configuration.shortcuts.replace(n, Configuration::Shortcut.parse(options))
           end
-          save
+          configuration.save
           puts "Overwrote shortcut."
         end
       else
-        append(options)
-        save
+        configuration.shortcuts.append(Configuration::Shortcut.parse(options))
+        configuration.save
         puts "Created shortcut."
       end
     end
 
     def list(options)
-      excluded = match_shortcuts_by_tag(options[:tag] || []) do |tag, rows|
+      excluded = configuration.shortcuts.match_by_tag(options[:tag] || []) do |tag, rows|
         puts %{##{tag}}
         puts ''.ljust(tag.length + 1, '=')
         rows.each do |row|
@@ -64,18 +67,29 @@ module Aka
         puts
       end
 
+      if configuration.links.any?
+        puts "====="
+        puts "Links"
+        puts "====="
+        puts
+
+        configuration.links.each do |link|
+          puts "#{link.output}: #{link.tag.map { |tag| "##{tag}" }.join(', ')}"
+        end
+      end
+
       excluded_output(excluded)
     end
 
     def remove(options)
-      found = find(options)
+      found = configuration.shortcuts.find(options)
 
       if found.length > 0
         found.each do |n, row|
-          delete(n)
+          configuration.shortcuts.delete(n)
         end
 
-        save
+        configuration.save
 
         puts "Removed shortcut."
       else
@@ -83,59 +97,35 @@ module Aka
       end
     end
 
-    def matches_tag?(row, tag)
-      return true unless row.tag
+    def generate(options)
+      excluded = configuration.shortcuts.generate(options)
 
-      if tag =~ /^~(.+)/
-        !row.tag.include?($1)
+      excluded_output(excluded)
+    end
+
+    def link(options)
+      unless options[:delete]
+        configuration.links.add(options)
+        configuration.save
+        puts "Saved link."
       else
-        row.tag && row.tag.include?(tag)
+        configuration.links.delete(options)
+        configuration.save
+        puts "Deleted link."
       end
     end
 
-    def generate(options)
-      scripts = []
-      functions = []
-
-      excluded = match_shortcuts_by_tag(options[:tag] || []) do |tag, rows|
-        rows.each do |row|
-          unless row.function
-            scripts << generate_output(row)
-          else
-            functions << generate_output(row)
-          end
-        end
+    def sync
+      configuration.links.each do |config|
+        excluded = configuration.shortcuts.generate(config)
+        excluded_output(excluded)
       end
-
-      if options[:output]
-        File.open(options[:output], 'w+') do |f|
-          scripts.each do |script|
-            f.puts script
-          end
-
-          functions.each do |function|
-            f.puts function
-          end
-        end
-
-        puts "Generated #{options[:output]}."
-      else
-        scripts.each do |script|
-          puts script
-        end
-
-        functions.each do |function|
-          puts function
-        end
-      end
-
-      excluded_output(excluded)
     end
 
     def edit(options)
       result = nil
 
-      found = find(options)
+      found = configuration.shortcuts.find(options)
 
       index, row = found.first
 
@@ -180,15 +170,15 @@ module Aka
 
       if result
         parse_row_txt(row, result)
-        shortcuts[index] = row
-        save
+        configuration.shortcuts.replace(index, row)
+        configuration.save
         puts "Saved shortcut."
       else
       end
     end
 
     def show(options)
-      found = find(options)
+      found = configuration.shortcuts.find(options)
 
       _, row = found.first
 
@@ -199,100 +189,18 @@ module Aka
       end
     end
 
+    def upgrade(options)
+      configuration.upgrade
+    end
+
     private
 
+    def configuration
+      @configuration ||= Configuration.new
+    end
+
     def shortcuts
-      @shortcuts ||= begin
-        if File.exist?(aka_yml)
-          YAML::load_file(aka_yml)
-        else
-          {}
-        end
-      end
-    end
-
-    def find(options)
-      if options[:tag]
-        shortcuts.select do |_, row|
-          next unless row.shortcut == options[:shortcut]
-
-          options[:tag].find do |tag|
-            row.tag && row.tag.include?(tag)
-          end
-        end
-      else
-        shortcuts.select do |_, row|
-          row.shortcut == options[:shortcut]
-        end
-      end
-    end
-
-    def append(options)
-      shortcuts[count + 1] = row(options)
-    end
-
-    def replace(index, options)
-      shortcuts[index] = row(options)
-    end
-
-    def delete(index)
-      shortcuts.delete(index)
-    end
-
-    def count
-      result, _ = shortcuts.max { |(n, _)| n }
-      result || 0
-    end
-
-    def row(options)
-      OpenStruct.new.tap do |row|
-        row.shortcut = options['shortcut']
-        row.command = options['command']
-        row.tag = options['tag'] if options['tag']
-        row.description = options['description'] if options['description']
-        row.function = options['function'] if options['function']
-      end
-    end
-
-    def save
-      File.open(aka_yml, 'w+') do |f|
-        f.write shortcuts.to_yaml
-      end
-    end
-
-    def aka_yml
-      ENV['AKA'] || File.expand_path('~/.aka.yml')
-    end
-
-    def shortcuts_by_tag
-      shortcuts.inject({ :default => [] }) do |acc, (_, row)|
-        if row.tag
-          row.tag.each do |tag|
-            acc[tag] ||= []
-            acc[tag] << row
-          end
-        else
-          acc[:default] << row
-        end
-        acc
-      end
-    end
-
-    def match_shortcuts_by_tag(tags, &blk)
-      excluded = { :tags => [], :shortcuts => 0 }
-
-      shortcuts_by_tag.each do |tag, rows|
-        next if rows.empty?
-        unless tag == :default || tags.empty? || tags.include?(tag)
-          excluded[:tags] << tag
-          excluded[:shortcuts] += rows.length
-          next
-        end
-
-        yield(tag, rows)
-      end
-
-      excluded
+      configuration.shortcuts.all
     end
 
     def excluded_output(excluded)
@@ -318,20 +226,6 @@ module Aka
       end
 
       puts "#{row.shortcut.ljust(20)}          #{description.ljust(70).strip}"
-    end
-
-    def generate_output(row)
-      string = if row.function
-        <<-EOS.gsub(/^        /, '')
-        function #{row.shortcut} {
-          #{row.command}
-        }
-        EOS
-      else
-        %{alias #{row.shortcut}="#{row.command.gsub(%{"}, %{\\"})}"}
-      end
-
-      string
     end
 
     def parse_row_txt(row, txt)
