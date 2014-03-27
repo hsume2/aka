@@ -20,6 +20,9 @@ module Aka
         aka-list.1
         aka-remove.1
         aka-show.1
+        aka-link.1
+        aka-sync.1
+        aka-upgrade.1
         aka.7)
 
       exit unless manpages.include?(command)

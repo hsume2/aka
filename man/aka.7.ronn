@@ -8,7 +8,9 @@ aka(7) -- Manage Shell Keyboard Shortcuts
 `aka` edit <shortcut> \[options\]<br>
 `aka` remove <shortcut><br>
 `aka` list \[options\]<br>
-`aka` generate \[options\]
+`aka` link \[options\]<br>
+`aka` generate \[options\]<br>
+`aka` sync
 
 ## DESCRIPTION
 
@@ -78,6 +80,30 @@ Remove a shortcut:
 
     $ aka remove ls
     Removes shortcut.
+
+Add a link:
+
+    $ aka link --tag os:linux --output ~/.aka.zsh
+    Saved link.
+
+Remove a link:
+
+    $ aka link --delete --tag os:linux --output ~/.aka.zsh
+    Removed link.
+
+Synchronize links:
+
+    $ aka link --tag os:linux --output ~/.aka.zsh
+    Saved link.
+    $ aka sync
+    Generated ~/.aka.zsh.
+    4 shortcut(s) excluded (#linux).
+
+Upgrade links from v0 to v1:
+
+    $ aka upgrade
+    Upgraded ~/.aka.yml.
+    Backed up to ~/.aka.yml.backup."
 
 ## ENVIRONMENT
 

@@ -78,3 +78,27 @@ Feature: Help with aka
     """
     aka-edit - Edit keyboard shortcuts
     """
+
+  Scenario: Help linking shortcuts
+    When I run `aka -h link`
+    Then the exit status should be 0
+    And the output should contain:
+    """
+    aka-link - Link keyboard shortcuts
+    """
+
+  Scenario: Help syncing shortcuts
+    When I run `aka -h sync`
+    Then the exit status should be 0
+    And the output should contain:
+    """
+    aka-sync - Synchronize keyboard shortcuts
+    """
+
+  Scenario: Help upgrading shortcuts
+    When I run `aka -h upgrade`
+    Then the exit status should be 0
+    And the output should contain:
+    """
+    aka-upgrade - Upgrade keyboard shortcuts
+    """
