@@ -32,6 +32,10 @@ module Aka
 
     module Link
       def self.parse(options)
+        unless options['tag'] && options['output']
+          abort("Invalid link.")
+        end
+
         OpenStruct.new.tap do |row|
           row.tag = options['tag'] if options['tag']
           row.output = options['output'] if options['output']

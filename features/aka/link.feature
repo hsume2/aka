@@ -70,6 +70,7 @@ Feature: Link keyboard shortcuts
     And I run `aka add .. "cd .."`
     When I run `aka link --tag os:darwin --output .aka.zsh`
     And I run `aka link --tag os:darwin --output .aka.zsh`
+    Then the exit status should be 0
     And the stdout should contain exactly:
     """
     Created shortcut.
@@ -115,6 +116,56 @@ Feature: Link keyboard shortcuts
         - os:darwin
         :output: .aka.zsh
       modifiable: true
+
+    """
+
+  Scenario: Add a link with invalid options
+    Given I run `aka add ls "ls -F --color=auto" --description "ls\nls\nls" --function --tag os:linux`
+    And I run `aka add ls "ls -FG" --tag os:darwin`
+    And I run `aka add .. "cd .."`
+    When I run `aka link`
+    Then the exit status should not be 0
+    And the stdout should contain exactly:
+    """
+    Created shortcut.
+    Created shortcut.
+    Created shortcut.
+
+    """
+    And the stderr should contain exactly:
+    """
+    Invalid link.
+
+    """
+    And the file ".aka.yml" should contain exactly:
+    """
+    ---
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+          :tag:
+          - os:linux
+          :description: |-
+            ls
+            ls
+            ls
+          :function: true
+        modifiable: true
+      2: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -FG
+          :tag:
+          - os:darwin
+        modifiable: true
+      3: !ruby/object:OpenStruct
+        table:
+          :shortcut: ..
+          :command: cd ..
+        modifiable: true
 
     """
 
