@@ -1,7 +1,7 @@
 module Aka
   class Shortcuts
-    def initialize(configuration, shortcuts)
-      @configuration, @shortcuts = configuration, shortcuts.dup
+    def initialize(shortcuts)
+      @shortcuts = shortcuts.dup
     end
 
     def append(shortcut)

@@ -9,6 +9,7 @@ Feature: Upgrade aka
     | variable | value |
     | NO_MAN   | 1     |
 
+
   Scenario: Upgrade from v0 to v1
     Given a file named ".aka.yml" with:
     """
@@ -36,3 +37,15 @@ Feature: Upgrade aka
     """
     And the stdout should contain "Upgraded"
     And the stdout should contain ".aka.yml"
+    And the stdout should contain "Backed up to"
+    And the stdout should contain ".aka.yml.backup"
+    And the file ".aka.yml.backup" should contain exactly:
+    """
+    ---
+    1: !ruby/object:OpenStruct
+      table:
+        :shortcut: ls
+        :command: ls -F --color=auto
+      modifiable: true
+
+    """

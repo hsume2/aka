@@ -83,31 +83,21 @@ module Aka
       end
     end
 
-    def matches_tag?(row, tag)
-      return true unless row.tag
-
-      if tag =~ /^~(.+)/
-        !row.tag.include?($1)
-      else
-        row.tag && row.tag.include?(tag)
-      end
-    end
-
     def generate(options)
       excluded = configuration.shortcuts.generate(options)
 
       excluded_output(excluded)
     end
 
-    def config(options)
-      configuration.add_configuration(Configuration::Config.parse(options))
+    def link(options)
+      configuration.links.add(options)
       configuration.save
 
-      puts "Saved configuration."
+      puts "Saved link."
     end
 
     def sync
-      configuration.configuration[:configs].each do |config|
+      configuration.links.each do |config|
         excluded = configuration.shortcuts.generate(config)
         excluded_output(excluded)
       end

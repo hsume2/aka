@@ -30,7 +30,7 @@ module Aka
       end
     end
 
-    module Config
+    module Link
       def self.parse(options)
         OpenStruct.new.tap do |row|
           row.tag = options['tag'] if options['tag']
@@ -51,7 +51,7 @@ module Aka
     end
 
     def shortcuts
-      @shortcuts ||= Shortcuts.new(self, @configuration[:shortcuts])
+      @shortcuts ||= Shortcuts.new(@configuration[:shortcuts])
     end
 
     def version
@@ -64,33 +64,25 @@ module Aka
         :shortcuts => shortcuts.all
       }
 
-      current[:configs] = @configuration[:configs] if @configuration[:configs]
+      current[:links] = links.all if links.any?
 
       File.open(aka_yml, 'w+') do |f|
         f.write current.to_yaml
       end
     end
 
-    def add_configuration(config)
-      @configuration[:configs] ||= []
-      @configuration[:configs] << config
+    def links
+      @links ||= Links.new(@configuration[:links] || [])
     end
 
     def upgrade
       if !version
         Upgrader::FromV0.run(aka_yml)
-
-        puts "Upgraded #{aka_yml}."
       end
     end
 
     def aka_yml
       ENV['AKA'] || File.expand_path('~/.aka.yml')
-    end
-
-    def count
-      result, _ = shortcuts.max { |(n, _)| n }
-      result || 0
     end
   end
 end
