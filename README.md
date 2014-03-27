@@ -109,7 +109,7 @@ Upgrade links from v0 to v1:
 
     $ aka upgrade
     Upgraded ~/.aka.yml.
-    Backed up to ~/.aka.yml.backup."
+    Backed up to ~/.aka.yml.backup.
 
 ## ENVIRONMENT
 
