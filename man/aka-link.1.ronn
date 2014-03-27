@@ -11,6 +11,8 @@ aka-link(1) -- Link keyboard shortcuts
 
 This command manages keyboard shortcuts links in `aka(7)`.
 
+After creating a link, you can easily synchronize changes to shortcuts to designated `output` files.
+
 ## OPTIONS
 
 * `-t` <tag1>[,<tag2>...]:
