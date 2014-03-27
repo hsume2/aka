@@ -9,6 +9,11 @@ module Aka
       @links << link unless @links.include?(link)
     end
 
+    def delete(link)
+      link = Configuration::Link.parse(link)
+      @links.delete(link)
+    end
+
     def any?
       @links.any?
     end

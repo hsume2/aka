@@ -90,10 +90,15 @@ module Aka
     end
 
     def link(options)
-      configuration.links.add(options)
-      configuration.save
-
-      puts "Saved link."
+      unless options[:delete]
+        configuration.links.add(options)
+        configuration.save
+        puts "Saved link."
+      else
+        configuration.links.delete(options)
+        configuration.save
+        puts "Deleted link."
+      end
     end
 
     def sync

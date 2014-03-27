@@ -66,6 +66,7 @@ module Aka
     on("-i FILE", "--input")
     on("-h", "--help")
     on("-v", "--version")
+    on("--delete")
 
     use_log_level_option
   end
