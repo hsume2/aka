@@ -1,8 +1,8 @@
 module Aka
   class Configuration
-    FORMAT = '1'
+    FORMAT = '2'
 
-    attr_reader :configuration
+    attr_reader :configuration, :links
 
     module Shortcut
       def self.parse(options)
@@ -52,6 +52,11 @@ module Aka
         end
       end
       @configuration[:shortcuts] ||= {}
+
+      @links ||= begin
+        links = YAML::load_file(aka_link) if File.exist?(aka_link)
+        Links.new(links || [])
+      end
     end
 
     def shortcuts
@@ -68,25 +73,29 @@ module Aka
         :shortcuts => shortcuts.all
       }
 
-      current[:links] = links.all if links.any?
-
       File.open(aka_yml, 'w+') do |f|
         f.write current.to_yaml
       end
-    end
 
-    def links
-      @links ||= Links.new(@configuration[:links] || [])
+      File.open(aka_link, 'w+') do |f|
+        f.write links.all.to_yaml
+      end if links.any?
     end
 
     def upgrade
       if !version
-        Upgrader::FromV0.run(aka_yml)
+        Upgrader::FromV0To1.run(aka_yml)
+      elsif version == '1'
+        Upgrader::FromV1To2.run(aka_yml, aka_link)
       end
     end
 
     def aka_yml
       ENV['AKA'] || File.expand_path('~/.aka.yml')
+    end
+
+    def aka_link
+      ENV['AKA_LINK'] || File.expand_path('~/.aka.link')
     end
   end
 end
