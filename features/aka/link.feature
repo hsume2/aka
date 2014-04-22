@@ -6,6 +6,7 @@ Feature: Link keyboard shortcuts
   Background:
     Given a file named ".aka.yml" should not exist
     And I set the AKA environment variable to the ".aka.yml" file in the working directory
+    And I set the AKA_LINK environment variable to the ".aka.link" file in the working directory
     And I set the environment variables to:
     | variable | value |
     | NO_MAN   | 1     |
@@ -28,7 +29,7 @@ Feature: Link keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    :version: '1'
+    :version: '2'
     :shortcuts:
       1: !ruby/object:OpenStruct
         table:
@@ -54,7 +55,11 @@ Feature: Link keyboard shortcuts
           :shortcut: ..
           :command: cd ..
         modifiable: true
-    :links:
+
+    """
+    And the file ".aka.link" should contain exactly:
+    """
+    ---
     - !ruby/object:OpenStruct
       table:
         :tag:
@@ -83,7 +88,7 @@ Feature: Link keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    :version: '1'
+    :version: '2'
     :shortcuts:
       1: !ruby/object:OpenStruct
         table:
@@ -109,7 +114,11 @@ Feature: Link keyboard shortcuts
           :shortcut: ..
           :command: cd ..
         modifiable: true
-    :links:
+
+    """
+    And the file ".aka.link" should contain exactly:
+    """
+    ---
     - !ruby/object:OpenStruct
       table:
         :tag:
@@ -140,7 +149,7 @@ Feature: Link keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    :version: '1'
+    :version: '2'
     :shortcuts:
       1: !ruby/object:OpenStruct
         table:
@@ -168,6 +177,7 @@ Feature: Link keyboard shortcuts
         modifiable: true
 
     """
+    And the file ".aka.link" should not exist
 
   Scenario: Remove a link
     Given I run `aka add ls "ls -F --color=auto" --description "ls\nls\nls" --function --tag os:linux`
@@ -188,7 +198,7 @@ Feature: Link keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    :version: '1'
+    :version: '2'
     :shortcuts:
       1: !ruby/object:OpenStruct
         table:
@@ -216,6 +226,7 @@ Feature: Link keyboard shortcuts
         modifiable: true
 
     """
+    And the file ".aka.link" should contain ""
 
   Scenario: Sync a link
     Given a file named ".aka.zsh" should not exist
