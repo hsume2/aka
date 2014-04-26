@@ -76,12 +76,14 @@ module Aka
     end
 
     def links
-      @links ||= Links.new(@configuration[:links] || [])
+      @links ||= Links.new(@configuration[:links] || {})
     end
 
     def upgrade
       if !version
-        Upgrader::FromV0.run(aka_yml)
+        Upgrader::FromV0ToV1.run(aka_yml)
+      elsif version == '1'
+        Upgrader::FromV1ToV2.run(aka_yml)
       end
     end
 

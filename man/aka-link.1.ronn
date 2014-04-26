@@ -28,12 +28,12 @@ After creating a link, you can easily synchronize changes to shortcuts to design
 
 Add a link:
 
-    $ aka link --tag os:linux --output ~/.aka.zsh
+    $ aka link --tag os:linux --output \~/.aka.zsh
     Saved link.
 
 Remove a link:
 
-    $ aka link --delete --tag os:linux --output ~/.aka.zsh
+    $ aka link --delete --tag os:linux --output \~/.aka.zsh
     Removed link.
 
 ## SEE ALSO

@@ -56,7 +56,7 @@ module Aka
       end
 
       if options[:output]
-        File.open(options[:output], 'w+') do |f|
+        File.open(File.expand_path(options[:output]), 'w+') do |f|
           scripts.each do |script|
             f.puts script
           end

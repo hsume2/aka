@@ -55,12 +55,12 @@ Feature: Link keyboard shortcuts
           :command: cd ..
         modifiable: true
     :links:
-    - !ruby/object:OpenStruct
-      table:
-        :tag:
-        - os:darwin
-        :output: .aka.zsh
-      modifiable: true
+      1: !ruby/object:OpenStruct
+        table:
+          :tag:
+          - os:darwin
+          :output: .aka.zsh
+        modifiable: true
 
     """
 
@@ -110,12 +110,12 @@ Feature: Link keyboard shortcuts
           :command: cd ..
         modifiable: true
     :links:
-    - !ruby/object:OpenStruct
-      table:
-        :tag:
-        - os:darwin
-        :output: .aka.zsh
-      modifiable: true
+      1: !ruby/object:OpenStruct
+        table:
+          :tag:
+          - os:darwin
+          :output: .aka.zsh
+        modifiable: true
 
     """
 
@@ -217,7 +217,7 @@ Feature: Link keyboard shortcuts
 
     """
 
-  Scenario: Sync a link
+  Scenario: Sync link
     Given a file named ".aka.zsh" should not exist
     And I run `aka add ls "ls -F --color=auto" --description "ls\nls\nls" --function --tag os:linux`
     And I run `aka add ls "ls -FG" --tag os:darwin`
@@ -238,6 +238,70 @@ Feature: Link keyboard shortcuts
     """
     alias ..="cd .."
     alias ls="ls -FG"
+
+    """
+
+  Scenario: Sync links
+    Given a file named ".aka.zsh" should not exist
+    And I run `aka add ls "ls -F --color=auto" --description "ls\nls\nls" --function --tag os:linux`
+    And I run `aka add ls "ls -FG" --tag os:darwin`
+    And I run `aka add .. "cd .."`
+    And I run `aka link --tag os:darwin --output .aka.zsh`
+    And I run `aka link --tag os:linux --output .aka2.zsh`
+    When I run `aka sync`
+    Then the exit status should be 0
+    And the stdout should contain exactly:
+    """
+    Created shortcut.
+    Created shortcut.
+    Created shortcut.
+    Saved link.
+    Saved link.
+    Generated .aka.zsh.
+    Generated .aka2.zsh.
+
+    """
+    And the file ".aka.zsh" should contain exactly:
+    """
+    alias ..="cd .."
+    alias ls="ls -FG"
+
+    """
+    And the file ".aka2.zsh" should contain exactly:
+    """
+    alias ..="cd .."
+    function ls {
+      ls -F --color=auto
+    }
+
+    """
+
+  Scenario: Sync specific link
+    Given a file named ".aka.zsh" should not exist
+    And I run `aka add ls "ls -F --color=auto" --description "ls\nls\nls" --function --tag os:linux`
+    And I run `aka add ls "ls -FG" --tag os:darwin`
+    And I run `aka add .. "cd .."`
+    And I run `aka link --tag os:darwin --output .aka.zsh`
+    And I run `aka link --tag os:linux --output .aka2.zsh`
+    When I run `aka sync 2`
+    Then the exit status should be 0
+    And the stdout should contain exactly:
+    """
+    Created shortcut.
+    Created shortcut.
+    Created shortcut.
+    Saved link.
+    Saved link.
+    Generated .aka2.zsh.
+
+    """
+    And the file ".aka.zsh" should not exist
+    And the file ".aka2.zsh" should contain exactly:
+    """
+    alias ..="cd .."
+    function ls {
+      ls -F --color=auto
+    }
 
     """
 
@@ -270,6 +334,6 @@ Feature: Link keyboard shortcuts
     Links
     =====
 
-    .aka.zsh: #os:darwin
+    [1] .aka.zsh: #os:darwin
 
     """
