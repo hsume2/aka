@@ -6,6 +6,7 @@ Feature: Link keyboard shortcuts
   Background:
     Given a file named ".aka.yml" should not exist
     And I set the AKA environment variable to the ".aka.yml" file in the working directory
+    And I set the AKA_LINK environment variable to the ".aka.link.yml" file in the working directory
     And I set the environment variables to:
     | variable | value |
     | NO_MAN   | 1     |
@@ -28,7 +29,7 @@ Feature: Link keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    :version: '1'
+    :version: '2'
     :shortcuts:
       1: !ruby/object:OpenStruct
         table:
@@ -54,6 +55,12 @@ Feature: Link keyboard shortcuts
           :shortcut: ..
           :command: cd ..
         modifiable: true
+
+    """
+    And the file ".aka.link.yml" should contain exactly:
+    """
+    ---
+    :version: '2'
     :links:
     - !ruby/object:OpenStruct
       table:
@@ -83,7 +90,7 @@ Feature: Link keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    :version: '1'
+    :version: '2'
     :shortcuts:
       1: !ruby/object:OpenStruct
         table:
@@ -109,6 +116,12 @@ Feature: Link keyboard shortcuts
           :shortcut: ..
           :command: cd ..
         modifiable: true
+
+    """
+    And the file ".aka.link.yml" should contain exactly:
+    """
+    ---
+    :version: '2'
     :links:
     - !ruby/object:OpenStruct
       table:
@@ -140,7 +153,7 @@ Feature: Link keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    :version: '1'
+    :version: '2'
     :shortcuts:
       1: !ruby/object:OpenStruct
         table:
@@ -188,7 +201,7 @@ Feature: Link keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    :version: '1'
+    :version: '2'
     :shortcuts:
       1: !ruby/object:OpenStruct
         table:
