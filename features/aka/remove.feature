@@ -6,6 +6,7 @@ Feature: Remove keyboard shortcuts
   Background:
     Given a file named ".aka.yml" should not exist
     And I set the AKA environment variable to the ".aka.yml" file in the working directory
+    And I set the AKA_LINK environment variable to the ".aka.link.yml" file in the working directory
     And I set the environment variables to:
     | variable | value |
     | NO_MAN   | 1     |
@@ -23,7 +24,7 @@ Feature: Remove keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    :version: '1'
+    :version: '2'
     :shortcuts: {}
 
     """
@@ -41,7 +42,7 @@ Feature: Remove keyboard shortcuts
     And the file ".aka.yml" should contain exactly:
     """
     ---
-    :version: '1'
+    :version: '2'
     :shortcuts:
       1: !ruby/object:OpenStruct
         table:
