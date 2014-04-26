@@ -114,6 +114,8 @@ Feature: Upgrade aka
     """
     And the stdout should contain "Upgraded"
     And the stdout should contain ".aka.yml"
+    And the stdout should contain "Created"
+    And the stdout should contain ".aka.link.yml"
     And the stdout should contain "Backed up to"
     And the stdout should contain ".aka.yml.backup"
     And the file ".aka.yml.backup" should contain exactly:

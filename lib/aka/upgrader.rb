@@ -10,13 +10,12 @@ module Aka
         }
 
         FileUtils.cp(aka_yml, "#{aka_yml}.backup")
+        puts "Backed up to #{aka_yml}.backup."
 
         File.open(aka_yml, 'w+') do |f|
           f.write current.to_yaml
         end
-
         puts "Upgraded #{aka_yml}."
-        puts "Backed up to #{aka_yml}.backup."
       end
     end
 
@@ -28,10 +27,12 @@ module Aka
         links = v2.delete(:links)
 
         FileUtils.cp(aka_yml, "#{aka_yml}.backup")
+        puts "Backed up to #{aka_yml}.backup."
 
         File.open(aka_yml, 'w+') do |f|
           f.write v2.to_yaml
         end
+        puts "Upgraded #{aka_yml}."
 
         v2_links = {
           :version => '2',
@@ -41,9 +42,7 @@ module Aka
         File.open(aka_link_yml, 'w+') do |f|
           f.write v2_links.to_yaml
         end
-
-        puts "Upgraded #{aka_yml}."
-        puts "Backed up to #{aka_yml}.backup."
+        puts "Created #{aka_link_yml}."
       end
     end
   end
