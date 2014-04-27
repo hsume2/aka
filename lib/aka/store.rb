@@ -73,8 +73,8 @@ module Aka
         puts "====="
         puts
 
-        configuration.links.each do |link|
-          puts "#{link.output}: #{link.tag.map { |tag| "##{tag}" }.join(', ')}"
+        configuration.links.each do |index, link|
+          puts "[#{index}] #{link.output}: #{link.tag.map { |tag| "##{tag}" }.join(', ')}"
         end
       end
 
@@ -104,19 +104,20 @@ module Aka
     end
 
     def link(options)
-      unless options[:delete]
-        configuration.links.add(options)
-        configuration.save
-        puts "Saved link."
-      else
-        configuration.links.delete(options)
-        configuration.save
-        puts "Deleted link."
-      end
+      configuration.links.add(options)
+      configuration.save
+      puts "Saved link."
     end
 
-    def sync
-      configuration.links.each do |config|
+    def unlink(key)
+      configuration.links.delete(key)
+      configuration.save
+      puts "Deleted link."
+    end
+
+    def sync(match)
+      configuration.links.each do |index, config|
+        next if match && match != index
         excluded = configuration.shortcuts.generate(config.marshal_dump)
         excluded_output(excluded)
       end

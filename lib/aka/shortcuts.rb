@@ -8,12 +8,12 @@ module Aka
       @shortcuts[count + 1] = shortcut
     end
 
-    def replace(index, shortcut)
-      @shortcuts[index] = shortcut
+    def replace(key, shortcut)
+      @shortcuts[key] = shortcut
     end
 
-    def delete(index)
-      @shortcuts.delete(index)
+    def delete(key)
+      @shortcuts.delete(key)
     end
 
     def count
@@ -56,7 +56,7 @@ module Aka
       end
 
       if options[:output]
-        File.open(options[:output], 'w+') do |f|
+        File.open(File.expand_path(options[:output]), 'w+') do |f|
           scripts.each do |script|
             f.puts script
           end

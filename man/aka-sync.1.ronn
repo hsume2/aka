@@ -3,13 +3,18 @@ aka-sync(1) -- Synchronize keyboard shortcuts
 
 ## SYNOPSIS
 
-`aka sync`
+`aka sync` <link>
 
 ## DESCRIPTION
 
 This command manages synchronizes keyboard shortcuts links in `aka(7)`.
 
 Any links you've created will be generated to the designated `output` with the given `tags`.
+
+## OPTIONS
+
+* `<link>`:
+  Provide the id of a specific link to synchronize.
 
 ## EXAMPLES
 
@@ -23,4 +28,4 @@ Synchronize links:
 
 ## SEE ALSO
 
-`aka(7)`, `aka-link(1)`
+`aka(7)`, `aka-link(1)`, `aka-list(1)`

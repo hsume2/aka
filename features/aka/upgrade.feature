@@ -49,3 +49,89 @@ Feature: Upgrade aka
       modifiable: true
 
     """
+
+  Scenario: Upgrade from v1 to v2
+    Given a file named ".aka.yml" with:
+    """
+    ---
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+          :tag:
+          - os:linux
+          :description: |-
+            ls
+            ls
+            ls
+          :function: true
+        modifiable: true
+    :links:
+    - !ruby/object:OpenStruct
+      table:
+        :tag:
+        - os:darwin
+        :output: .aka.zsh
+      modifiable: true
+
+    """
+    When I run `aka upgrade`
+    Then the exit status should be 0
+    And the file ".aka.yml" should contain exactly:
+    """
+    ---
+    :version: '2'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+          :tag:
+          - os:linux
+          :description: |-
+            ls
+            ls
+            ls
+          :function: true
+        modifiable: true
+    :links:
+      1: !ruby/object:OpenStruct
+        table:
+          :tag:
+          - os:darwin
+          :output: .aka.zsh
+        modifiable: true
+
+    """
+    And the stdout should contain "Upgraded"
+    And the stdout should contain ".aka.yml"
+    And the stdout should contain "Backed up to"
+    And the stdout should contain ".aka.yml.backup"
+    And the file ".aka.yml.backup" should contain exactly:
+    """
+    ---
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+          :tag:
+          - os:linux
+          :description: |-
+            ls
+            ls
+            ls
+          :function: true
+        modifiable: true
+    :links:
+    - !ruby/object:OpenStruct
+      table:
+        :tag:
+        - os:darwin
+        :output: .aka.zsh
+      modifiable: true
+
+    """

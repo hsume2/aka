@@ -6,12 +6,11 @@ module Aka
 
     def add(link)
       link = Configuration::Link.parse(link)
-      @links << link unless @links.include?(link)
+      @links[count + 1] = link unless @links.find { |_, l| l == link }
     end
 
-    def delete(link)
-      link = Configuration::Link.parse(link)
-      @links.delete(link)
+    def delete(key)
+      @links.delete(key)
     end
 
     def any?
@@ -24,6 +23,11 @@ module Aka
 
     def each(&blk)
       @links.each(&blk)
+    end
+
+    def count
+      result, _ = @links.max { |(n, _)| n }
+      result || 0
     end
   end
 end

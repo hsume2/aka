@@ -10,7 +10,8 @@ aka(7) -- Manage Shell Keyboard Shortcuts
 `aka` list \[options\]<br>
 `aka` link \[options\]<br>
 `aka` generate \[options\]<br>
-`aka` sync
+`aka` sync<br>
+`aka` upgrade
 
 ## DESCRIPTION
 
@@ -88,7 +89,15 @@ Add a link:
 
 Remove a link:
 
-    $ aka link --delete --tag os:linux --output ~/.aka.zsh
+    $ aka list
+    ...
+    =====
+    Links
+    =====
+
+    [1] ~/.aka.zsh: #osx, #git
+    [2] ~/.aka.zsh: #linux, #git
+    $ aka link delete 2
     Removed link.
 
 Synchronize links:
