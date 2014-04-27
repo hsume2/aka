@@ -17,6 +17,25 @@ module Aka
       end
     end
 
+    def self.go!
+      setup_defaults
+      opts.post_setup
+      opts.parse!
+      opts.check_args!
+      result = call_main
+      if result.kind_of? Fixnum
+        exit result
+      else
+        exit 0
+      end
+    rescue OptionParser::ParseError => ex
+      logger.error ex.message
+      puts
+      store = Aka::Store.new
+      store.help(nil, nil)
+      exit 64 # Linux standard for bad command line
+    end
+
     main do |command, shortcut, script|
       if options[:version]
         puts "aka version #{Aka::VERSION}"
@@ -28,7 +47,10 @@ module Aka
 
       store = Aka::Store.new
 
-      store.help(command, options) and exit if options[:help]
+      if options[:help]
+        store.help(command, options)
+        exit
+      end
 
       case command
       when 'add'
@@ -55,6 +77,7 @@ module Aka
         store.sync(shortcut ? shortcut.to_i : nil)
       else
         store.help(command, options)
+        exit
       end
     end
 

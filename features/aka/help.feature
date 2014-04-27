@@ -24,6 +24,14 @@ Feature: Help with aka
     aka - Manage Shell Keyboard Shortcuts
     """
 
+  Scenario: Get help with invalid arguments
+    When I run `aka -z`
+    Then the exit status should be 64
+    And the output should contain:
+    """
+    aka - Manage Shell Keyboard Shortcuts
+    """
+
   Scenario: Get version
     When I run `aka --version`
     Then the exit status should be 0

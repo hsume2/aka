@@ -33,7 +33,6 @@ module Aka
         Kernel.exec "man #{root}/#{command}"
       else
         puts File.read("#{root}/#{command}.txt")
-        exit
       end
     end
 
