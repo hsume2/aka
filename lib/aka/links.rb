@@ -9,9 +9,8 @@ module Aka
       @links[count + 1] = link unless @links.find { |_, l| l == link }
     end
 
-    def delete(link)
-      link = Configuration::Link.parse(link)
-      @links.delete_if { |_, l| l == link }
+    def delete(key)
+      @links.delete(key)
     end
 
     def any?

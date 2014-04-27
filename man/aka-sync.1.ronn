@@ -14,7 +14,7 @@ Any links you've created will be generated to the designated `output` with the g
 ## OPTIONS
 
 * `<link>`:
-  Provide the number of a specific link to synchronize.
+  Provide the id of a specific link to synchronize.
 
 ## EXAMPLES
 

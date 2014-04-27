@@ -174,7 +174,7 @@ Feature: Link keyboard shortcuts
     And I run `aka add ls "ls -FG" --tag os:darwin`
     And I run `aka add .. "cd .."`
     And I run `aka link --tag os:darwin --output .aka.zsh`
-    When I run `aka link --delete --tag os:darwin --output .aka.zsh`
+    When I run `aka link delete 1`
     Then the exit status should be 0
     And the stdout should contain exactly:
     """

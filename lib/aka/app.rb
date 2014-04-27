@@ -44,7 +44,11 @@ module Aka
       when 'show'
         store.show(options)
       when 'link'
-        store.link(options)
+        if shortcut == 'delete'
+          store.unlink(script.to_i)
+        else
+          store.link(options)
+        end
       when 'upgrade'
         store.upgrade(options)
       when 'sync'

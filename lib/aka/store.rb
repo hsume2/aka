@@ -104,15 +104,15 @@ module Aka
     end
 
     def link(options)
-      unless options[:delete]
-        configuration.links.add(options)
-        configuration.save
-        puts "Saved link."
-      else
-        configuration.links.delete(options)
-        configuration.save
-        puts "Deleted link."
-      end
+      configuration.links.add(options)
+      configuration.save
+      puts "Saved link."
+    end
+
+    def unlink(key)
+      configuration.links.delete(key)
+      configuration.save
+      puts "Deleted link."
     end
 
     def sync(match)

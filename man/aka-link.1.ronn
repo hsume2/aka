@@ -4,8 +4,8 @@ aka-link(1) -- Link keyboard shortcuts
 ## SYNOPSIS
 
 `aka link` [`-t` <tag1>[,<tag2>...]]
-           [`-o` <output>]
-           [`--delete`]
+           [`-o` <output>]<br>
+`aka link` `delete` *link*
 
 ## DESCRIPTION
 
@@ -21,8 +21,8 @@ After creating a link, you can easily synchronize changes to shortcuts to design
 * `-o <output>`:
   The location to link the output to.
 
-* `--delete`:
-  Delete the link with the given options.
+* `delete` *link*:
+  Delete the link with id *link*.
 
 ## EXAMPLES
 
@@ -33,7 +33,15 @@ Add a link:
 
 Remove a link:
 
-    $ aka link --delete --tag os:linux --output \~/.aka.zsh
+    $ aka list
+    ...
+    =====
+    Links
+    =====
+
+    [1] ~/.aka.zsh: #osx, #git
+    [2] ~/.aka.zsh: #linux, #git
+    $ aka link delete 2
     Removed link.
 
 ## SEE ALSO

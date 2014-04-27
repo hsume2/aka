@@ -8,12 +8,12 @@ module Aka
       @shortcuts[count + 1] = shortcut
     end
 
-    def replace(index, shortcut)
-      @shortcuts[index] = shortcut
+    def replace(key, shortcut)
+      @shortcuts[key] = shortcut
     end
 
-    def delete(index)
-      @shortcuts.delete(index)
+    def delete(key)
+      @shortcuts.delete(key)
     end
 
     def count
