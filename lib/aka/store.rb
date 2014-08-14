@@ -145,7 +145,7 @@ module Aka
             tags = ''
           end
           file.write(<<-EOS.gsub(/^            /, '')
-            Keyword: #{row.shortcut}
+            Shortcut: #{row.shortcut}
             Description:
             #{row.description}
             Function (y/n): #{row.function ? 'y' : 'n'}
@@ -238,10 +238,11 @@ module Aka
       if txt =~ %r{^Function \(y/n\):\s*(y|n)}m
         row.function = ($1.strip == 'y')
       end
-      if txt =~ /^Tags:(.+)$/
+      if txt =~ /^Tags:(.*)$/
         row.tag = $1.strip.split(',').map(&:strip)
+        row.delete_field('tag') if row.tag.empty?
       end
-      if txt =~ /^Command:(.+)$/m
+      if txt =~ /^Command:(.*)$/m
         row.command = $1.strip
       end
     end
