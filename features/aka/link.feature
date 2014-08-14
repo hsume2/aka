@@ -51,7 +51,7 @@ Feature: Link keyboard shortcuts
         modifiable: true
       3: !ruby/object:OpenStruct
         table:
-          :shortcut: ..
+          :shortcut: ".."
           :command: cd ..
         modifiable: true
     :links:
@@ -59,7 +59,7 @@ Feature: Link keyboard shortcuts
         table:
           :tag:
           - os:darwin
-          :output: .aka.zsh
+          :output: ".aka.zsh"
         modifiable: true
 
     """
@@ -106,7 +106,7 @@ Feature: Link keyboard shortcuts
         modifiable: true
       3: !ruby/object:OpenStruct
         table:
-          :shortcut: ..
+          :shortcut: ".."
           :command: cd ..
         modifiable: true
     :links:
@@ -114,7 +114,7 @@ Feature: Link keyboard shortcuts
         table:
           :tag:
           - os:darwin
-          :output: .aka.zsh
+          :output: ".aka.zsh"
         modifiable: true
 
     """
@@ -163,7 +163,7 @@ Feature: Link keyboard shortcuts
         modifiable: true
       3: !ruby/object:OpenStruct
         table:
-          :shortcut: ..
+          :shortcut: ".."
           :command: cd ..
         modifiable: true
 
@@ -211,7 +211,7 @@ Feature: Link keyboard shortcuts
         modifiable: true
       3: !ruby/object:OpenStruct
         table:
-          :shortcut: ..
+          :shortcut: ".."
           :command: cd ..
         modifiable: true
 
