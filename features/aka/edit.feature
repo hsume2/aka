@@ -53,6 +53,107 @@ Feature: Edit keyboard shortcuts
 
     """
 
+  Scenario: Edit to remove tag
+    Given I run `aka add ls "ls -F --color=auto" --tag zsh`
+    And a file named "input.txt" with:
+    """
+    Shortcut: lsf
+    Description:
+    1
+    2
+    3
+    Function (y/n): y
+    Tags:
+    Command:
+    ls -F
+    """
+    When I run `aka edit ls -i input.txt`
+    Then the exit status should be 0
+    And the output should contain exactly:
+    """
+    Created shortcut.
+    Saved shortcut.
+
+    """
+    And the file ".aka.yml" should contain exactly:
+    """
+    ---
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: lsf
+          :command: ls -F
+          :description: |-
+            1
+            2
+            3
+          :function: true
+        modifiable: true
+
+    """
+
+  Scenario: Edit that clears command
+    Given I run `aka add ls "ls -F --color=auto" --tag zsh`
+    And a file named "input.txt" with:
+    """
+    Shortcut: lsf
+    Description:
+    1
+    2
+    3
+    Function (y/n): y
+    Tags:
+    Command:
+    """
+    When I run `aka edit ls -i input.txt`
+    Then the exit status should be 0
+    And the output should contain exactly:
+    """
+    Created shortcut.
+    Saved shortcut.
+
+    """
+    And the file ".aka.yml" should contain exactly:
+    """
+    ---
+    :version: '1'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: lsf
+          :command: ''
+          :description: |-
+            1
+            2
+            3
+          :function: true
+        modifiable: true
+
+    """
+    When I run `aka list`
+    Then the exit status should be 0
+    And the output should contain exactly:
+    """
+    Created shortcut.
+    Saved shortcut.
+    #default
+    ========
+    lsf                           1; 2; 3
+
+
+    """
+
+  # When in interactive mode, edit the shorcut so it looks like this:
+  # Shortcut: lsf
+  # Description:
+  # 1
+  # 2
+  # 3
+  # Function (y/n): y
+  # Tags: zsh, bash
+  # Command:
+  # ls -F
   @interactive
   Scenario: Edit interactively
     Given I run `aka add ls "ls -F --color=auto"`

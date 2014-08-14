@@ -106,7 +106,7 @@ module Aka
 
     def by_tag
       @shortcuts.inject({ :default => [] }) do |acc, (_, row)|
-        if row.tag
+        if row.tag && !row.tag.empty?
           row.tag.each do |tag|
             acc[tag] ||= []
             acc[tag] << row
