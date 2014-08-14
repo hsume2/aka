@@ -73,7 +73,7 @@ Feature: Upgrade aka
       table:
         :tag:
         - os:darwin
-        :output: .aka.zsh
+        :output: ".aka.zsh"
       modifiable: true
 
     """
@@ -101,7 +101,7 @@ Feature: Upgrade aka
         table:
           :tag:
           - os:darwin
-          :output: .aka.zsh
+          :output: ".aka.zsh"
         modifiable: true
 
     """
@@ -131,7 +131,7 @@ Feature: Upgrade aka
       table:
         :tag:
         - os:darwin
-        :output: .aka.zsh
+        :output: ".aka.zsh"
       modifiable: true
 
     """
