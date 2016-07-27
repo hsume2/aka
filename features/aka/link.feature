@@ -25,43 +25,31 @@ Feature: Link keyboard shortcuts
     Saved link.
 
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -F --color=auto
-          :tag:
-          - os:linux
-          :description: |-
-            ls
-            ls
-            ls
-          :function: true
-        modifiable: true
-      2: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -FG
-          :tag:
-          - os:darwin
-        modifiable: true
-      3: !ruby/object:OpenStruct
-        table:
-          :shortcut: ".."
-          :command: cd ..
-        modifiable: true
-    :links:
-      1: !ruby/object:OpenStruct
-        table:
-          :tag:
-          - os:darwin
-          :output: ".aka.zsh"
-        modifiable: true
+    Created shortcut.
+    Created shortcut.
+    Created shortcut.
+    Saved link.
+    #default
+    ========
+    ..                            cd ..
 
+    #os:linux
+    =========
+    ls                            ls; ls; ls
+
+    #os:darwin
+    ==========
+    ls                            ls -FG
+
+    =====
+    Links
+    =====
+
+    [1] .aka.zsh: #os:darwin
     """
 
   Scenario: Add the same link
@@ -80,43 +68,32 @@ Feature: Link keyboard shortcuts
     Saved link.
 
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -F --color=auto
-          :tag:
-          - os:linux
-          :description: |-
-            ls
-            ls
-            ls
-          :function: true
-        modifiable: true
-      2: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -FG
-          :tag:
-          - os:darwin
-        modifiable: true
-      3: !ruby/object:OpenStruct
-        table:
-          :shortcut: ".."
-          :command: cd ..
-        modifiable: true
-    :links:
-      1: !ruby/object:OpenStruct
-        table:
-          :tag:
-          - os:darwin
-          :output: ".aka.zsh"
-        modifiable: true
+    Created shortcut.
+    Created shortcut.
+    Created shortcut.
+    Saved link.
+    Saved link.
+    #default
+    ========
+    ..                            cd ..
 
+    #os:linux
+    =========
+    ls                            ls; ls; ls
+
+    #os:darwin
+    ==========
+    ls                            ls -FG
+
+    =====
+    Links
+    =====
+
+    [1] .aka.zsh: #os:darwin
     """
 
   Scenario: Add a link with invalid options
@@ -134,39 +111,31 @@ Feature: Link keyboard shortcuts
     """
     And the stderr should contain exactly:
     """
+
+
+
     Invalid link.
 
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -F --color=auto
-          :tag:
-          - os:linux
-          :description: |-
-            ls
-            ls
-            ls
-          :function: true
-        modifiable: true
-      2: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -FG
-          :tag:
-          - os:darwin
-        modifiable: true
-      3: !ruby/object:OpenStruct
-        table:
-          :shortcut: ".."
-          :command: cd ..
-        modifiable: true
+    Created shortcut.
+    Created shortcut.
+    Created shortcut.
+    Invalid link.
+    #default
+    ========
+    ..                            cd ..
 
+    #os:linux
+    =========
+    ls                            ls; ls; ls
+
+    #os:darwin
+    ==========
+    ls                            ls -FG
     """
 
   Scenario: Remove a link
@@ -185,36 +154,26 @@ Feature: Link keyboard shortcuts
     Deleted link.
 
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -F --color=auto
-          :tag:
-          - os:linux
-          :description: |-
-            ls
-            ls
-            ls
-          :function: true
-        modifiable: true
-      2: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -FG
-          :tag:
-          - os:darwin
-        modifiable: true
-      3: !ruby/object:OpenStruct
-        table:
-          :shortcut: ".."
-          :command: cd ..
-        modifiable: true
+    Created shortcut.
+    Created shortcut.
+    Created shortcut.
+    Saved link.
+    Deleted link.
+    #default
+    ========
+    ..                            cd ..
 
+    #os:linux
+    =========
+    ls                            ls; ls; ls
+
+    #os:darwin
+    ==========
+    ls                            ls -FG
     """
 
   Scenario: Sync link

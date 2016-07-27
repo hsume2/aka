@@ -7,6 +7,8 @@ module Aka
   class Store
     include Methadone::CLILogging
 
+    FORMAT = '3'
+
     def help(command, options)
       case command
       when nil       then command = "aka.7"
@@ -37,27 +39,37 @@ module Aka
     end
 
     def add(options)
-      found = configuration.shortcuts.find(options)
+      shortcut = Configuration::Shortcut.new({
+        :shortcut => options[:shortcut],
+        :command => options[:command],
+        :tag => options[:tag],
+        :description => options[:description],
+        :function => options[:function]
+      })
 
+      found = shortcut_manager.find(options)
       if found.length > 0
         unless options[:force]
           abort %{Shortcut "#{options[:shortcut]}" exists. Pass --force to overwrite. Or provide a new --tag.}
         else
-          found.each do |n, row|
-            configuration.shortcuts.replace(n, Configuration::Shortcut.parse(options))
+          found.each do |row|
+            [:shortcut, :command, :description, :function].each do |key|
+              row.send(:"#{key}=", options[key])
+            end
+            row.tag = options[:tag] || []
           end
-          configuration.save
+          save
           puts "Overwrote shortcut."
         end
       else
-        configuration.shortcuts.append(Configuration::Shortcut.parse(options))
-        configuration.save
+        shortcut_manager.add(shortcut)
+        save
         puts "Created shortcut."
       end
     end
 
     def list(options)
-      excluded = configuration.shortcuts.match_by_tag(options[:tag] || []) do |tag, rows|
+      excluded = shortcut_manager.match_by_tag(options[:tag] || []) do |tag, rows|
         puts %{##{tag}}
         puts ''.ljust(tag.length + 1, '=')
         rows.each do |row|
@@ -66,14 +78,16 @@ module Aka
         puts
       end
 
-      if configuration.links.any?
+      if link_manager.any?
         puts "====="
         puts "Links"
         puts "====="
         puts
 
-        configuration.links.each do |index, link|
+        index = 1
+        link_manager.each do |link|
           puts "[#{index}] #{link.output}: #{link.tag.map { |tag| "##{tag}" }.join(', ')}"
+          index += 1
         end
       end
 
@@ -81,14 +95,14 @@ module Aka
     end
 
     def remove(options)
-      found = configuration.shortcuts.find(options)
+      found = shortcut_manager.find(options)
 
       if found.length > 0
-        found.each do |n, row|
-          configuration.shortcuts.delete(n)
+        found.each do |shortcut|
+          shortcut_manager.remove(shortcut)
         end
 
-        configuration.save
+        save
 
         puts "Removed shortcut."
       else
@@ -97,27 +111,38 @@ module Aka
     end
 
     def generate(options)
-      excluded = configuration.shortcuts.generate(options)
+      excluded = shortcut_manager.generate(options)
 
       excluded_output(excluded)
     end
 
     def link(options)
-      configuration.links.add(options)
-      configuration.save
+      unless options[:tag] && options[:output]
+        abort("Invalid link.")
+      end
+
+      new_link = Configuration::Link.new({
+        :tag => options[:tag],
+        :output => options[:output]
+      })
+
+      link_manager.add(new_link)
+      save
       puts "Saved link."
     end
 
     def unlink(key)
-      configuration.links.delete(key)
-      configuration.save
+      link_manager.remove(key)
+      save
       puts "Deleted link."
     end
 
     def sync(match)
-      configuration.links.each do |index, config|
+      index = 0
+      link_manager.each do |config|
+        index += 1
         next if match && match != index
-        excluded = configuration.shortcuts.generate(config.marshal_dump)
+        excluded = shortcut_manager.generate({ :tag => config.tag, :output => config.output })
         excluded_output(excluded)
       end
     end
@@ -125,9 +150,7 @@ module Aka
     def edit(options)
       result = nil
 
-      found = configuration.shortcuts.find(options)
-
-      index, row = found.first
+      row = shortcut_manager.find(options).first
 
       unless row
         abort "Shortcut not found."
@@ -170,17 +193,14 @@ module Aka
 
       if result
         parse_row_txt(row, result)
-        configuration.shortcuts.replace(index, row)
-        configuration.save
+        save
         puts "Saved shortcut."
       else
       end
     end
 
     def show(options)
-      found = configuration.shortcuts.find(options)
-
-      _, row = found.first
+      row = shortcut_manager.find(options).first
 
       if row
         puts show_output(row)
@@ -190,17 +210,54 @@ module Aka
     end
 
     def upgrade(options)
-      configuration.upgrade
+      configuration
+
+      if !@version
+        Upgrader::FromV0ToV1.run(aka_yml)
+      elsif @version == '1'
+        Upgrader::FromV1ToV2.run(aka_yml)
+      elsif @version == '2'
+        Upgrader::FromV2ToV3.run(aka_yml)
+      end
+    end
+
+    def save
+      File.open(aka_yml, 'w+') do |f|
+        f.write configuration.encode
+      end
     end
 
     private
 
     def configuration
-      @configuration ||= Configuration.new
+      @configuration ||= begin
+        if File.exist?(aka_yml)
+          begin
+            Configuration.decode(File.read(aka_yml))
+          rescue Protobuf::InvalidWireType => e
+            YAML::load_file(aka_yml).tap do |result|
+              if result[:version]
+                @version = result[:version]
+              end
+            end
+            Configuration.new(:version => @version)
+          end
+        else
+          Configuration.new(:version => FORMAT)
+        end
+      end
     end
 
-    def shortcuts
-      configuration.shortcuts.all
+    def shortcut_manager
+      @shortcuts ||= ShortcutManager.new(configuration.shortcuts)
+    end
+
+    def link_manager
+      @link_manager ||= LinkManager.new(configuration.links)
+    end
+
+    def aka_yml
+      ENV['AKA'] || File.expand_path('~/.aka.yml')
     end
 
     def excluded_output(excluded)
@@ -211,11 +268,7 @@ module Aka
     end
 
     def list_output(row)
-      if row.function
-        description = row.description || row.command
-      else
-        description = row.command
-      end
+      description = row.description.length > 0 ? row.description : row.command
 
       if description
         description = description.split("\n").map(&:strip).join("; ")
@@ -240,7 +293,6 @@ module Aka
       end
       if txt =~ /^Tags:(.*)$/
         row.tag = $1.strip.split(',').map(&:strip)
-        row.delete_field('tag') if row.tag.empty?
       end
       if txt =~ /^Command:(.*)$/m
         row.command = $1.strip

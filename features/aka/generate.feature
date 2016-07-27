@@ -70,8 +70,10 @@ Feature: Generate commands for loading keyboard shortcuts into your shell
     """
     And the stderr should contain exactly:
     """
-    1 shortcut(s) excluded (#os:linux).
 
+
+
+    1 shortcut(s) excluded (#os:linux).
     """
 
   Scenario: Generate script with function

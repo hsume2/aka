@@ -1,5 +1,23 @@
 #!/usr/bin/env ruby
 
+# resolve bin path, ignoring symlinks
+require "pathname"
+bin_file = Pathname.new(__FILE__).realpath
+
+# add locally vendored gems to libpath
+gem_dir = File.expand_path("../../vendor/gems", bin_file)
+Dir["#{gem_dir}/**/lib"].each do |libdir|
+  $:.unshift libdir
+end
+
+# add self to libpath
+$:.unshift File.expand_path("../../lib", bin_file)
+
+if RUBY_VERSION < '1.9.0' # this is a string comparison, but it should work for any old ruby version
+  $stderr.puts "aka requires Ruby 1.9+."
+  exit 1
+end
+
 require 'aka.rb'
 
 Aka::App.go!

@@ -65,8 +65,10 @@ class Main
   end
 end
 
-Aruba::InProcess.main_class = Main
-Aruba.process = Aruba::InProcess
+Aruba.configure do |config|
+  config.main_class = Main
+  config.command_launcher = :in_process
+end
 
 Before do
   # Using "announce" causes massive warnings on 1.9.2

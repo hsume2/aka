@@ -1,42 +1,31 @@
 module Aka
-  class Shortcuts
+  class ShortcutManager
     def initialize(shortcuts)
-      @shortcuts = shortcuts.dup
+      @shortcuts = shortcuts
     end
 
-    def append(shortcut)
-      @shortcuts[count + 1] = shortcut
+    def add(shortcut)
+      @shortcuts << shortcut
     end
 
-    def replace(key, shortcut)
-      @shortcuts[key] = shortcut
-    end
-
-    def delete(key)
-      @shortcuts.delete(key)
-    end
-
-    def count
-      result, _ = @shortcuts.max { |(n, _)| n }
-      result || 0
-    end
-
-    def all
-      @shortcuts.dup
+    def remove(shortcut)
+      @shortcuts.delete_if do |item|
+        item == shortcut
+      end
     end
 
     def find(options)
       if options[:tag]
-        @shortcuts.select do |_, row|
-          next unless row.shortcut == options[:shortcut]
+        @shortcuts.select do |shortcut|
+          next unless shortcut.shortcut == options[:shortcut]
 
           options[:tag].find do |tag|
-            row.tag && row.tag.include?(tag)
+            shortcut.tag && shortcut.tag.include?(tag)
           end
         end
       else
-        @shortcuts.select do |_, row|
-          row.shortcut == options[:shortcut]
+        @shortcuts.select do |shortcut|
+          shortcut.shortcut == options[:shortcut]
         end
       end
     end
@@ -48,9 +37,9 @@ module Aka
       excluded = match_by_tag(options[:tag] || []) do |tag, rows|
         rows.each do |row|
           unless row.function
-            scripts << Configuration::Shortcut.generate_output(row)
+            scripts << Shortcut.generate_output(row)
           else
-            functions << Configuration::Shortcut.generate_output(row)
+            functions << Shortcut.generate_output(row)
           end
         end
       end
@@ -80,13 +69,6 @@ module Aka
       excluded
     end
 
-    def excluded_output(excluded)
-      return if excluded[:tags].empty?
-
-      tags = excluded[:tags].map { |t| '#' + t }.join(', ')
-      $stderr.puts "#{excluded[:shortcuts]} shortcut(s) excluded (#{tags})."
-    end
-
     def match_by_tag(tags, &blk)
       excluded = { :tags => [], :shortcuts => 0 }
 
@@ -105,7 +87,7 @@ module Aka
     end
 
     def by_tag
-      @shortcuts.inject({ :default => [] }) do |acc, (_, row)|
+      @shortcuts.inject({ :default => [] }) do |acc, row|
         if row.tag && !row.tag.empty?
           row.tag.each do |tag|
             acc[tag] ||= []

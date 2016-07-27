@@ -10,6 +10,7 @@ Feature: Upgrade aka
     | NO_MAN   | 1     |
 
 
+  @ruby2
   Scenario: Upgrade from v0 to v1
     Given a file named ".aka.yml" with:
     """
@@ -50,6 +51,7 @@ Feature: Upgrade aka
 
     """
 
+  @ruby2
   Scenario: Upgrade from v1 to v2
     Given a file named ".aka.yml" with:
     """
@@ -133,5 +135,80 @@ Feature: Upgrade aka
         - os:darwin
         :output: ".aka.zsh"
       modifiable: true
+
+    """
+
+  @ruby2
+  Scenario: Upgrade from v2 to v3
+    Given a file named ".aka.yml" with:
+    """
+    ---
+    :version: '2'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+          :tag:
+          - os:linux
+          :description: |-
+            ls
+            ls
+            ls
+          :function: true
+        modifiable: true
+    :links:
+      1: !ruby/object:OpenStruct
+        table:
+          :tag:
+          - os:darwin
+          :output: ".aka.zsh"
+        modifiable: true
+
+    """
+    When I run `aka upgrade`
+    Then the exit status should be 0
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain:
+    """
+    #os:linux
+    =========
+    ls                            ls; ls; ls
+
+    =====
+    Links
+    =====
+
+    [1] .aka.zsh: #os:darwin
+    """
+    And the stdout should contain "Upgraded"
+    And the stdout should contain ".aka.yml"
+    And the stdout should contain "Backed up to"
+    And the stdout should contain ".aka.yml.backup"
+    And the file ".aka.yml.backup" should contain exactly:
+    """
+    ---
+    :version: '2'
+    :shortcuts:
+      1: !ruby/object:OpenStruct
+        table:
+          :shortcut: ls
+          :command: ls -F --color=auto
+          :tag:
+          - os:linux
+          :description: |-
+            ls
+            ls
+            ls
+          :function: true
+        modifiable: true
+    :links:
+      1: !ruby/object:OpenStruct
+        table:
+          :tag:
+          - os:darwin
+          :output: ".aka.zsh"
+        modifiable: true
 
     """

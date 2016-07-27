@@ -20,12 +20,12 @@ Feature: Remove keyboard shortcuts
     Removed shortcut.
 
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts: {}
-
+    Created shortcut.
+    Removed shortcut.
     """
 
   Scenario: Remove missing shortcut
@@ -38,15 +38,13 @@ Feature: Remove keyboard shortcuts
     No shortcut "..". Aborting.
 
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -F --color=auto
-        modifiable: true
-
+    Created shortcut.
+    No shortcut "..". Aborting.
+    #default
+    ========
+    ls                            ls -F --color=auto
     """

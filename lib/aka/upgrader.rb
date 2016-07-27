@@ -43,5 +43,38 @@ module Aka
         puts "Upgraded #{aka_yml}."
       end
     end
+
+    module FromV2ToV3
+      def self.run(aka_yml)
+        v2 = YAML::load_file(aka_yml)
+
+        v3 = Configuration.new(:version => '3')
+
+        v2[:shortcuts].each do |_, shortcut|
+          v3.shortcuts << Configuration::Shortcut.new({
+            :shortcut => shortcut[:shortcut],
+            :command => shortcut[:command],
+            :tag => shortcut[:tag],
+            :description => shortcut[:description],
+            :function => shortcut[:function]
+          })
+        end
+
+        (v2[:links] || {}).each do |_, link|
+          v3.links << Configuration::Link.new({
+            :tag => link[:tag],
+            :output => link[:output]
+          })
+        end
+
+        FileUtils.cp(aka_yml, "#{aka_yml}.backup")
+        puts "Backed up to #{aka_yml}.backup."
+
+        File.open(aka_yml, 'w+') do |f|
+          f.write v3.encode
+        end
+        puts "Upgraded #{aka_yml}."
+      end
+    end
   end
 end

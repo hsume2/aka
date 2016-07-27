@@ -18,17 +18,14 @@ Feature: Add keyboard shortcuts
     """
     Created shortcut.
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -F --color=auto
-        modifiable: true
-
+    Created shortcut.
+    #default
+    ========
+    ls                            ls -F --color=auto
     """
 
   Scenario: Create new shortcut with tag
@@ -38,19 +35,14 @@ Feature: Add keyboard shortcuts
     """
     Created shortcut.
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -F --color=auto
-          :tag:
-          - os:darwin
-        modifiable: true
-
+    Created shortcut.
+    #os:darwin
+    ==========
+    ls                            ls -F --color=auto
     """
 
   Scenario: Create new shortcut with multiple tags
@@ -60,20 +52,18 @@ Feature: Add keyboard shortcuts
     """
     Created shortcut.
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -F --color=auto
-          :tag:
-          - A
-          - B
-        modifiable: true
+    Created shortcut.
+    #A
+    ==
+    ls                            ls -F --color=auto
 
+    #B
+    ==
+    ls                            ls -F --color=auto
     """
 
   Scenario: Create new shortcut with new tag
@@ -84,27 +74,23 @@ Feature: Add keyboard shortcuts
     """
     Created shortcut.
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -FG
-          :tag:
-          - A
-          - B
-        modifiable: true
-      2: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -FG
-          :tag:
-          - C
-        modifiable: true
+    Created shortcut.
+    Created shortcut.
+    #A
+    ==
+    ls                            ls -FG
 
+    #B
+    ==
+    ls                            ls -FG
+
+    #C
+    ==
+    ls                            ls -FG
     """
 
   Scenario: Don't overwrite existing shortcut
@@ -117,17 +103,15 @@ Feature: Add keyboard shortcuts
     Shortcut "ls" exists. Pass --force to overwrite. Or provide a new --tag.
 
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -F --color=auto
-        modifiable: true
-
+    Created shortcut.
+    Shortcut "ls" exists. Pass --force to overwrite. Or provide a new --tag.
+    #default
+    ========
+    ls                            ls -F --color=auto
     """
 
   Scenario: Overwrite existing shortcut with force
@@ -140,17 +124,15 @@ Feature: Add keyboard shortcuts
     Overwrote shortcut.
 
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -FG
-        modifiable: true
-
+    Created shortcut.
+    Overwrote shortcut.
+    #default
+    ========
+    ls                            ls -FG
     """
 
   Scenario: Create new shortcut as function
@@ -160,40 +142,29 @@ Feature: Add keyboard shortcuts
     """
     Created shortcut.
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -F --color=auto
-          :function: true
-        modifiable: true
-
+    Created shortcut.
+    #default
+    ========
+    ls                            ls -F --color=auto
     """
 
   Scenario: Create new shortcut with description
     When I run `aka add ls "ls -F --color=auto" --description "ls\nls\nls"`
     Then the exit status should be 0
-    And the output should contain:
+    And the output should contain exactly:
     """
     Created shortcut.
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.yml" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: ls
-          :command: ls -F --color=auto
-          :description: |-
-            ls
-            ls
-            ls
-        modifiable: true
-
+    Created shortcut.
+    #default
+    ========
+    ls                            ls; ls; ls
     """

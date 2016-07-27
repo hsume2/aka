@@ -32,8 +32,6 @@ Feature: List keyboard shortcuts
     #os:darwin
     ==========
     ls                            ls -FG
-
-
     """
 
   Scenario: List shortcuts matching tag
