@@ -12,6 +12,7 @@ module Aka
     def help(command, options)
       case command
       when nil       then command = "aka.7"
+      when 'ls'      then command = "aka.list.1"
       else command = "aka-#{command}.1"
       end
 
@@ -213,16 +214,16 @@ module Aka
       configuration
 
       if !@version
-        Upgrader::FromV0ToV1.run(aka_yml)
+        Upgrader::FromV0ToV1.run(aka_db)
       elsif @version == '1'
-        Upgrader::FromV1ToV2.run(aka_yml)
+        Upgrader::FromV1ToV2.run(aka_db)
       elsif @version == '2'
-        Upgrader::FromV2ToV3.run(aka_yml)
+        Upgrader::FromV2ToV3.run(aka_db)
       end
     end
 
     def save
-      File.open(aka_yml, 'w+') do |f|
+      File.open(aka_db, 'w+') do |f|
         f.write configuration.encode
       end
     end
@@ -231,11 +232,11 @@ module Aka
 
     def configuration
       @configuration ||= begin
-        if File.exist?(aka_yml)
+        if File.exist?(aka_db)
           begin
-            Configuration.decode(File.read(aka_yml))
+            Configuration.decode(File.read(aka_db))
           rescue Protobuf::InvalidWireType => e
-            YAML::load_file(aka_yml).tap do |result|
+            YAML::load_file(aka_db).tap do |result|
               if result[:version]
                 @version = result[:version]
               end
@@ -256,8 +257,8 @@ module Aka
       @link_manager ||= LinkManager.new(configuration.links)
     end
 
-    def aka_yml
-      ENV['AKA'] || File.expand_path('~/.aka.yml')
+    def aka_db
+      ENV['AKA'] || File.expand_path('~/.aka.db')
     end
 
     def excluded_output(excluded)

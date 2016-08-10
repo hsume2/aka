@@ -68,6 +68,7 @@ end
 Aruba.configure do |config|
   config.main_class = Main
   config.command_launcher = :in_process
+  # config.command_launcher = :debug
 end
 
 Before do

@@ -40,8 +40,8 @@ Bundler::GemHelper.install_tasks
 CUKE_RESULTS = 'results.html'
 CLEAN << CUKE_RESULTS
 Cucumber::Rake::Task.new(:features) do |t|
-  if Gem::Version.new(RUBY_VERSION.dup) <= Gem::Version.new('2.1.0')
-    t.cucumber_opts = "features --format html -o #{CUKE_RESULTS} --format pretty --no-source -x --tags ~@interactive --tags ~@ruby2"
+  if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.9')
+    t.cucumber_opts = "features --format html -o #{CUKE_RESULTS} --format pretty --no-source -x --tags ~@interactive --tags ~@ruby2.1.9_or_greater"
   else
     t.cucumber_opts = "features --format html -o #{CUKE_RESULTS} --format pretty --no-source -x --tags ~@interactive"
   end

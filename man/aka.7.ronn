@@ -111,10 +111,10 @@ Synchronize links:
 Upgrade links from v0 to v1:
 
     $ aka upgrade
-    Upgraded ~/.aka.yml.
-    Backed up to ~/.aka.yml.backup."
+    Upgraded ~/.aka.db.
+    Backed up to ~/.aka.db.backup."
 
 ## ENVIRONMENT
 
   * `AKA`:<br>
-    The file where **aka** stores everything. Default: ~/.aka.yml
+    The file where **aka** stores everything. Default: ~/.aka.db

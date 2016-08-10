@@ -4,8 +4,8 @@ Feature: Add keyboard shortcuts
   So I don't have to do it myself
 
   Background:
-    Given a file named ".aka.yml" should not exist
-    And I set the AKA environment variable to the ".aka.yml" file in the working directory
+    Given a file named ".aka.db" should not exist
+    And I set the AKA environment variable to the ".aka.db" file in the working directory
     And I set the environment variables to:
     | variable | value |
     | NO_MAN   | 1     |
@@ -18,7 +18,7 @@ Feature: Add keyboard shortcuts
     """
     Created shortcut.
     """
-    And the file ".aka.yml" should exist
+    And the file ".aka.db" should exist
     When I run `aka list`
     Then the output should contain exactly:
     """
@@ -35,7 +35,7 @@ Feature: Add keyboard shortcuts
     """
     Created shortcut.
     """
-    And the file ".aka.yml" should exist
+    And the file ".aka.db" should exist
     When I run `aka list`
     Then the output should contain exactly:
     """
@@ -52,7 +52,7 @@ Feature: Add keyboard shortcuts
     """
     Created shortcut.
     """
-    And the file ".aka.yml" should exist
+    And the file ".aka.db" should exist
     When I run `aka list`
     Then the output should contain exactly:
     """
@@ -74,7 +74,7 @@ Feature: Add keyboard shortcuts
     """
     Created shortcut.
     """
-    And the file ".aka.yml" should exist
+    And the file ".aka.db" should exist
     When I run `aka list`
     Then the output should contain exactly:
     """
@@ -103,7 +103,7 @@ Feature: Add keyboard shortcuts
     Shortcut "ls" exists. Pass --force to overwrite. Or provide a new --tag.
 
     """
-    And the file ".aka.yml" should exist
+    And the file ".aka.db" should exist
     When I run `aka list`
     Then the output should contain exactly:
     """
@@ -124,7 +124,7 @@ Feature: Add keyboard shortcuts
     Overwrote shortcut.
 
     """
-    And the file ".aka.yml" should exist
+    And the file ".aka.db" should exist
     When I run `aka list`
     Then the output should contain exactly:
     """
@@ -142,7 +142,7 @@ Feature: Add keyboard shortcuts
     """
     Created shortcut.
     """
-    And the file ".aka.yml" should exist
+    And the file ".aka.db" should exist
     When I run `aka list`
     Then the output should contain exactly:
     """
@@ -159,7 +159,7 @@ Feature: Add keyboard shortcuts
     """
     Created shortcut.
     """
-    And the file ".aka.yml" should exist
+    And the file ".aka.db" should exist
     When I run `aka list`
     Then the output should contain exactly:
     """

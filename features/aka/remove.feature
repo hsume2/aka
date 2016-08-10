@@ -4,8 +4,8 @@ Feature: Remove keyboard shortcuts
   So I don't have to do it myself
 
   Background:
-    Given a file named ".aka.yml" should not exist
-    And I set the AKA environment variable to the ".aka.yml" file in the working directory
+    Given a file named ".aka.db" should not exist
+    And I set the AKA environment variable to the ".aka.db" file in the working directory
     And I set the environment variables to:
     | variable | value |
     | NO_MAN   | 1     |
@@ -20,7 +20,7 @@ Feature: Remove keyboard shortcuts
     Removed shortcut.
 
     """
-    And the file ".aka.yml" should exist
+    And the file ".aka.db" should exist
     When I run `aka list`
     Then the output should contain exactly:
     """
@@ -38,7 +38,7 @@ Feature: Remove keyboard shortcuts
     No shortcut "..". Aborting.
 
     """
-    And the file ".aka.yml" should exist
+    And the file ".aka.db" should exist
     When I run `aka list`
     Then the output should contain exactly:
     """

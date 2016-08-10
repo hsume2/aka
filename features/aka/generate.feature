@@ -4,8 +4,8 @@ Feature: Generate commands for loading keyboard shortcuts into your shell
   So I don't have to do it myself
 
   Background:
-    Given a file named ".aka.yml" should not exist
-    And I set the AKA environment variable to the ".aka.yml" file in the working directory
+    Given a file named ".aka.db" should not exist
+    And I set the AKA environment variable to the ".aka.db" file in the working directory
     And I set the environment variables to:
     | variable | value |
     | NO_MAN   | 1     |

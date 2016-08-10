@@ -9,6 +9,8 @@ GEM_BLACKLIST = %w( bundler aka )
 
 target_dir = Dir.pwd
 
+FileUtils.rm_rf "#{target_dir}/vendor/gems"
+
 %x{env BUNDLE_WITHOUT="development:test" bundle show}.split("\n").each do |line|
   if line =~ /^  \* (.*?) \((.*?)\)/
     next if GEM_BLACKLIST.include?($1)
@@ -22,6 +24,14 @@ FileUtils.mkdir_p "#{target_dir}/pkg"
 
 description = Gem::Specification.find_by_name('aka').description
 
-system(%x{rake man:build})
+system("rake man:build")
 
-system(%{fpm -s dir -t deb -n aka -v #{Aka::VERSION} --after-install #{target_dir}/bin/postinstall --after-remove #{target_dir}/bin/postremove --prefix /usr/local/aka --description #{Shellwords.escape(description)} -x .git -x pkg -x man -x test -x features -x tmp -x .bundle -p pkg .})
+%x{which pkgbuild}
+
+if $?.success?
+  package_type = 'osxpkg'
+else
+  package_type = 'deb'
+end
+
+system(%{fpm -s dir -t #{package_type} -n aka -v #{Aka::VERSION} --after-install #{target_dir}/bin/postinstall --after-remove #{target_dir}/bin/postremove --prefix /usr/local/aka --description #{Shellwords.escape(description)} -x .git -x pkg -x man -x test -x features -x tmp -x .bundle -p pkg .})
