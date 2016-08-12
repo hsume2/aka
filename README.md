@@ -40,11 +40,11 @@ With **aka**, you can add, show, edit, remove, list keyboard shortcuts. On top o
 
 ### Debian/Ubuntu
 
-    $ curl -OL https://github.com/hsume2/aka/raw/v0.4.0/pkg/aka_0.4.0_amd64.deb && sudo dpkg -i aka_0.4.0_amd64.deb
+    $ curl -OL https://github.com/hsume2/aka/raw/v0.4.2/pkg/aka_0.4.2_amd64.deb && sudo dpkg -i aka_0.4.2_amd64.deb
 
 ### OS X
 
-    $ curl -OL https://github.com/hsume2/aka/raw/v0.4.0/pkg/aka-0.4.0.pkg && open aka-0.4.0.pkg
+    $ curl -OL https://github.com/hsume2/aka/raw/v0.4.2/pkg/aka-0.4.2.pkg && open aka-0.4.2.pkg
 
 ## EXAMPLES
 

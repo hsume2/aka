@@ -193,7 +193,7 @@ Feature: Link keyboard shortcuts
     Generated .aka.zsh.
 
     """
-    And the file ".aka.zsh" should contain exactly:
+    And the file ".aka.zsh" should contain:
     """
     alias ..="cd .."
     alias ls="ls -FG"
@@ -220,13 +220,13 @@ Feature: Link keyboard shortcuts
     Generated .aka2.zsh.
 
     """
-    And the file ".aka.zsh" should contain exactly:
+    And the file ".aka.zsh" should contain:
     """
     alias ..="cd .."
     alias ls="ls -FG"
 
     """
-    And the file ".aka2.zsh" should contain exactly:
+    And the file ".aka2.zsh" should contain:
     """
     alias ..="cd .."
     function ls {
@@ -255,7 +255,7 @@ Feature: Link keyboard shortcuts
 
     """
     And the file ".aka.zsh" should not exist
-    And the file ".aka2.zsh" should contain exactly:
+    And the file ".aka2.zsh" should contain:
     """
     alias ..="cd .."
     function ls {

@@ -53,6 +53,9 @@ module Aka
           functions.each do |function|
             f.puts function
           end
+
+          f.puts "export AKA_VERSION=#{Aka::VERSION}"
+          f.puts "export AKA_GENERATED_AT=#{Time.now.to_f}"
         end
 
         puts "Generated #{options[:output]}."
@@ -64,6 +67,9 @@ module Aka
         functions.each do |function|
           puts function
         end
+
+        puts "export AKA_VERSION=#{Aka::VERSION}"
+        puts "export AKA_GENERATED_AT=#{Time.now.to_f}"
       end
 
       excluded
