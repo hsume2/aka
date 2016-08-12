@@ -37,16 +37,15 @@ include Rake::DSL
 
 Bundler::GemHelper.install_tasks
 
-
-Rake::TestTask.new do |t|
-  t.pattern = 'test/tc_*.rb'
-end
-
-
 CUKE_RESULTS = 'results.html'
 CLEAN << CUKE_RESULTS
 Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "features --format html -o #{CUKE_RESULTS} --format pretty --no-source -x --tags ~@interactive"
+  if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.9')
+    t.cucumber_opts = "features --format html -o #{CUKE_RESULTS} --format pretty --no-source -x --tags ~@interactive --tags ~@ruby2.1.9_or_greater"
+  else
+    t.cucumber_opts = "features --format html -o #{CUKE_RESULTS} --format pretty --no-source -x --tags ~@interactive"
+  end
+
   t.fork = false
 end
 
@@ -94,5 +93,5 @@ rescue LoadError
   end
 end
 
-task :default => ["man:build", :test, :features]
+task :default => ["man:build", :features]
 

@@ -1,11 +1,10 @@
-.DS_Store
-results.html
-pkg
-html
-tmp
-Gemfile.lock
 .bundle
+.DS_Store
 .ruby-version
-
-# output from ronn
+Gemfile.lock
+html
 lib/aka/man/
+pkg/
+results.html
+tmp
+vendor/

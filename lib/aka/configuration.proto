@@ -1,0 +1,20 @@
+message Configuration {
+  required string version = 1;
+
+  message Shortcut {
+    required string shortcut = 1;
+    required string command = 2;
+    repeated string tag = 3;
+    optional string description = 4;
+    optional bool function = 5;
+  }
+
+  repeated Shortcut shortcuts = 2;
+
+  message Link {
+    repeated string tag = 1;
+    required string output = 2;
+  }
+
+  repeated Link links = 3;
+}

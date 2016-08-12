@@ -4,8 +4,8 @@ Feature: Edit keyboard shortcuts
   So I don't have to do it myself
 
   Background:
-    Given a file named ".aka.yml" should not exist
-    And I set the AKA environment variable to the ".aka.yml" file in the working directory
+    Given a file named ".aka.db" should not exist
+    And I set the AKA environment variable to the ".aka.db" file in the working directory
     And I set the environment variables to:
     | variable | value |
     | NO_MAN   | 1     |
@@ -32,29 +32,31 @@ Feature: Edit keyboard shortcuts
     Saved shortcut.
 
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.db" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: lsf
-          :command: ls -F
-          :description: |-
-            1
-            2
-            3
-          :function: true
-          :tag:
-          - zsh
-          - bash
-        modifiable: true
+    Created shortcut.
+    Saved shortcut.
+    #zsh
+    ====
+    lsf                           1; 2; 3
 
+    #bash
+    =====
+    lsf                           1; 2; 3
     """
 
   Scenario: Edit to remove tag
     Given I run `aka add ls "ls -F --color=auto" --tag zsh`
+    When I run `aka list`
+    Then the output should contain exactly:
+    """
+    Created shortcut.
+    #zsh
+    ====
+    ls                            ls -F --color=auto
+    """
     And a file named "input.txt" with:
     """
     Shortcut: lsf
@@ -72,25 +74,26 @@ Feature: Edit keyboard shortcuts
     And the output should contain exactly:
     """
     Created shortcut.
+    #zsh
+    ====
+    ls                            ls -F --color=auto
+
     Saved shortcut.
 
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.db" should exist
+    When I run `aka list`
+    Then the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: lsf
-          :command: ls -F
-          :description: |-
-            1
-            2
-            3
-          :function: true
-        modifiable: true
+    Created shortcut.
+    #zsh
+    ====
+    ls                            ls -F --color=auto
 
+    Saved shortcut.
+    #default
+    ========
+    lsf                           1; 2; 3
     """
 
   Scenario: Edit that clears command
@@ -114,23 +117,7 @@ Feature: Edit keyboard shortcuts
     Saved shortcut.
 
     """
-    And the file ".aka.yml" should contain exactly:
-    """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: lsf
-          :command: ''
-          :description: |-
-            1
-            2
-            3
-          :function: true
-        modifiable: true
-
-    """
+    And the file ".aka.db" should exist
     When I run `aka list`
     Then the exit status should be 0
     And the output should contain exactly:
@@ -140,8 +127,6 @@ Feature: Edit keyboard shortcuts
     #default
     ========
     lsf                           1; 2; 3
-
-
     """
 
   # When in interactive mode, edit the shorcut so it looks like this:
@@ -165,25 +150,20 @@ Feature: Edit keyboard shortcuts
     Saved shortcut.
 
     """
-    And the file ".aka.yml" should contain exactly:
+    And the file ".aka.db" should exist
+    When I run `aka list`
+    Then the exit status should be 0
+    And the output should contain exactly:
     """
-    ---
-    :version: '1'
-    :shortcuts:
-      1: !ruby/object:OpenStruct
-        table:
-          :shortcut: lsf
-          :command: ls -F
-          :description: |-
-            1
-            2
-            3
-          :function: true
-          :tag:
-          - zsh
-          - bash
-        modifiable: true
+    Created shortcut.
+    Saved shortcut.
+    #zsh
+    ====
+    lsf                           1; 2; 3
 
+    #bash
+    =====
+    lsf                           1; 2; 3
     """
 
   Scenario: Edit: Missing shortcut
