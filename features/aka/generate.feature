@@ -16,7 +16,7 @@ Feature: Generate commands for loading keyboard shortcuts into your shell
     And I run `aka add .. "cd .."`
     When I run `aka generate --output .aka.zsh`
     Then the exit status should be 0
-    And the output should contain exactly:
+    And the output should contain:
     """
     Created shortcut.
     Created shortcut.
@@ -24,7 +24,7 @@ Feature: Generate commands for loading keyboard shortcuts into your shell
     Generated .aka.zsh.
 
     """
-    And the file ".aka.zsh" should contain exactly:
+    And the file ".aka.zsh" should contain:
     """
     alias ..="cd .."
     alias ls="ls -FG"
@@ -40,7 +40,7 @@ Feature: Generate commands for loading keyboard shortcuts into your shell
     And I run `aka add .. "cd .."`
     When I run `aka generate`
     Then the exit status should be 0
-    And the output should contain exactly:
+    And the output should contain:
     """
     Created shortcut.
     Created shortcut.
@@ -59,7 +59,7 @@ Feature: Generate commands for loading keyboard shortcuts into your shell
     And I run `aka add .. "cd .."`
     When I run `aka generate --tag os:darwin`
     Then the exit status should be 0
-    And the stdout should contain exactly:
+    And the stdout should contain:
     """
     Created shortcut.
     Created shortcut.
@@ -68,7 +68,7 @@ Feature: Generate commands for loading keyboard shortcuts into your shell
     alias ls="ls -FG"
 
     """
-    And the stderr should contain exactly:
+    And the stderr should contain:
     """
 
 
@@ -80,13 +80,13 @@ Feature: Generate commands for loading keyboard shortcuts into your shell
     Given I run `aka add ls "ls -F --color=auto" --function`
     When I run `aka generate --output .aka2.zsh`
     Then the exit status should be 0
-    And the output should contain exactly:
+    And the output should contain:
     """
     Created shortcut.
     Generated .aka2.zsh.
 
     """
-    And the file ".aka2.zsh" should contain exactly:
+    And the file ".aka2.zsh" should contain:
     """
     function ls {
       ls -F --color=auto
@@ -100,7 +100,7 @@ Feature: Generate commands for loading keyboard shortcuts into your shell
     And I run `aka add sg "script/generate"`
     When I run `aka generate --output .aka.zsh`
     Then the exit status should be 0
-    And the output should contain exactly:
+    And the output should contain:
     """
     Created shortcut.
     Created shortcut.
@@ -108,7 +108,7 @@ Feature: Generate commands for loading keyboard shortcuts into your shell
     Generated .aka.zsh.
 
     """
-    And the file ".aka.zsh" should contain exactly:
+    And the file ".aka.zsh" should contain:
     """
     alias sc="script/console"
     alias sg="script/generate"
@@ -116,4 +116,54 @@ Feature: Generate commands for loading keyboard shortcuts into your shell
       ls -F --color=auto
     }
 
+    """
+
+  Scenario: Generate script with aka environment variables
+    Given I run `aka add ls "ls -F --color=auto" --description "ls\nls\nls" --function --tag os:linux`
+    And I run `aka add ls "ls -FG" --tag os:darwin`
+    And I run `aka add .. "cd .."`
+    When I run `aka generate --output .aka.zsh`
+    Then the exit status should be 0
+    And the output should contain:
+    """
+    Created shortcut.
+    Created shortcut.
+    Created shortcut.
+    Generated .aka.zsh.
+
+    """
+    And the file ".aka.zsh" should contain:
+    """
+    export AKA_VERSION=
+    """
+    And the file ".aka.zsh" should contain:
+    """
+    export AKA_GENERATED_AT=
+    """
+
+  Scenario: Generate script to stdout with aka environment variables
+    Given I run `aka add ls "ls -F --color=auto" --description "ls\nls\nls" --function --tag os:linux`
+    And I run `aka add ls "ls -FG" --tag os:darwin`
+    And I run `aka add .. "cd .."`
+    When I run `aka generate`
+    Then the exit status should be 0
+    And the output should contain:
+    """
+    Created shortcut.
+    Created shortcut.
+    Created shortcut.
+    alias ..="cd .."
+    alias ls="ls -FG"
+    function ls {
+      ls -F --color=auto
+    }
+
+    """
+    And the output should contain:
+    """
+    export AKA_VERSION=
+    """
+    And the output should contain:
+    """
+    export AKA_GENERATED_AT=
     """

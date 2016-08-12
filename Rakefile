@@ -93,5 +93,10 @@ rescue LoadError
   end
 end
 
-task :default => ["man:build", :features]
+desc "Compile the .proto files"
+task :protoc do
+  sh "protoc --ruby_out . lib/aka/configuration.proto"
+end
+
+task :default => ['man:build', :features]
 

@@ -25,6 +25,7 @@ FileUtils.mkdir_p "#{target_dir}/pkg"
 description = Gem::Specification.find_by_name('aka').description
 
 system("rake man:build")
+system("rake protoc")
 
 %x{which pkgbuild}
 
