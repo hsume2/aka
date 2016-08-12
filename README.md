@@ -38,6 +38,14 @@ With **aka**, you can add, show, edit, remove, list keyboard shortcuts. On top o
 
     $ gem install hsume2-aka
 
+### Debian/Ubuntu
+
+    $ curl -OL https://github.com/hsume2/aka/raw/v0.4.0/pkg/aka_0.4.0_amd64.deb && sudo dpkg -i aka_0.4.0_amd64.deb
+
+### OS X
+
+    $ curl -OL https://github.com/hsume2/aka/raw/v0.4.0/pkg/aka-0.4.0.pkg && open aka-0.4.0.pkg
+
 ## EXAMPLES
 
 Add a keyboard shortcut and generate the output script:
