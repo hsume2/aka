@@ -37,7 +37,7 @@ Feature: Help with aka
     Then the exit status should be 0
     And the output should contain exactly:
     """
-    aka version 0.4.2
+    aka version 0.4.3
 
     """
 
