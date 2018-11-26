@@ -23,7 +23,7 @@ module Aka
       opts.parse!
       opts.check_args!
       result = call_main
-      if result.kind_of? Fixnum
+      if result.kind_of? Integer
         exit result
       else
         exit 0
