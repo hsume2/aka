@@ -1,3 +1,4 @@
+require 'protobuf'
 require 'aka/configuration.pb'
 require "aka/shortcut"
 require "aka/shortcut_manager"

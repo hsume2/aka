@@ -43,7 +43,7 @@ module Aka
       shortcut = Configuration::Shortcut.new({
         :shortcut => options[:shortcut],
         :command => options[:command],
-        :tag => options[:tag],
+        :tag => options[:tag] || [],
         :description => options[:description],
         :function => options[:function]
       })
