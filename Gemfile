@@ -8,7 +8,7 @@ group :development, :test do
   gem 'cucumber', '= 2.4.0'
   gem 'ronn'
   gem 'fpm'
-  gem 'protobuf', '= 3.10.0'
+  gem 'google-protobuf'
 end
 
 # group :guard do

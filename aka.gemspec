@@ -23,6 +23,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("bundler", ">= 1.5")
   spec.add_development_dependency('rake', '~> 0.9.2')
   spec.add_dependency('methadone', '~> 2.0.2')
-  spec.add_dependency('protobuf')
+  spec.add_dependency('google-protobuf')
   spec.add_dependency('activesupport', '~> 4.0')
 end

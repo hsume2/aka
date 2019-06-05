@@ -1,5 +1,5 @@
-require 'protobuf'
-require 'aka/configuration.pb'
+require 'google/protobuf'
+require 'aka/configuration_pb'
 require "aka/shortcut"
 require "aka/shortcut_manager"
 require "aka/link_manager"
