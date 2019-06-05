@@ -71,7 +71,7 @@ module Aka
         puts "Backed up to #{aka_db}.backup."
 
         File.open(aka_db, 'w+') do |f|
-          f.write v3.encode
+          f.write Configuration.encode(v3)
         end
         puts "Upgraded #{aka_db}."
       end

@@ -55,9 +55,10 @@ module Aka
         else
           found.each do |row|
             [:shortcut, :command, :description, :function].each do |key|
+              next unless options[key]
               row.send(:"#{key}=", options[key])
             end
-            row.tag = options[:tag] || []
+            row.tag = options[:tag] || Google::Protobuf::RepeatedField.new(:string)
           end
           save
           puts "Overwrote shortcut."
@@ -224,7 +225,7 @@ module Aka
 
     def save
       File.open(aka_db, 'w+') do |f|
-        f.write configuration.encode
+        f.write Configuration.encode(configuration)
       end
     end
 
@@ -235,7 +236,7 @@ module Aka
         if File.exist?(aka_db)
           begin
             Configuration.decode(File.read(aka_db))
-          rescue Protobuf::InvalidWireType => e
+          rescue Google::Protobuf::ParseError => e
             YAML::load_file(aka_db).tap do |result|
               if result[:version]
                 @version = result[:version]
@@ -293,7 +294,9 @@ module Aka
         row.function = ($1.strip == 'y')
       end
       if txt =~ /^Tags:(.*)$/
-        row.tag = $1.strip.split(',').map(&:strip)
+        tags = Google::Protobuf::RepeatedField.new(:string)
+        tags += $1.strip.split(',').map(&:strip)
+        row.tag = tags
       end
       if txt =~ /^Command:(.*)$/m
         row.command = $1.strip
